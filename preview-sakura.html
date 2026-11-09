@@ -288,6 +288,9 @@
   .big-mint-btn:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
   .bmb-reason{font-size:13px;font-weight:600;color:var(--muted);margin-top:8px;min-height:1.35em}
   .bmb-reason.ok{color:var(--green)}
+  .agent-mini-btn{appearance:none;width:100%;margin-top:10px;background:var(--surface);border:1.5px dashed var(--pink);color:var(--pink-deep);font-family:inherit;font-weight:700;font-size:14px;padding:11px 14px;border-radius:999px;cursor:pointer;line-height:1.35}
+  .agent-mini-btn:hover{background:var(--blush)}
+  .agent-mini-btn:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
 
   /* ── 3 separated mint groups ── */
   .mint-groups{display:flex;flex-direction:column;gap:20px;margin-top:20px}
@@ -608,35 +611,29 @@
               <div class="mg-head">
                 <span class="mg-step" aria-hidden="true">1</span>
                 <div class="mg-head-main">
-                  <div class="mg-title" id="mgFreeTitle" data-lkey="mgFreeTitle">GRATIS — Khusus Agent ID</div>
-                  <div class="mg-desc" data-lkey="mgFreeDesc">Mint #1 saja • 1x per wallet • Selalu Small Seedling (Common)</div>
+                  <div class="mg-title" id="mgFreeTitle" data-lkey="mgFreeTitle">無料 — Agent ID限定</div>
+                  <div class="mg-desc" data-lkey="mgFreeDesc">ミント #1 のみ • 1ウォレット1回 • 必ず小さな苗木（コモン）• 請求はエージェントのプロンプト経由のみ</div>
                 </div>
                 <span class="mg-price">0 BNB</span>
               </div>
-              <div class="bmb-wrap">
-                <button type="button" class="big-mint-btn free" id="freeBtn">
-                  <span class="bmb-tag" data-lkey="freeBigTag">Agent ID 限定 · mint #1</span>
-                  <span class="bmb-title" data-lkey="freeBigTitle">🌸 MINT GRATIS</span>
-                  <span class="bmb-sub" data-lkey="freeBigSub">0 BNB — 1ウォレット1回 · 必ず小さな苗木（コモン）</span>
-                </button>
-                <div class="bmb-reason" id="freeReason"></div>
-              </div>
+              <p class="pack-note" data-lkey="freeAgentOnly">無料ミントは <b>Agent ID 保有者限定</b>で、請求は<b>エージェントのプロンプト経由のみ</b>です。このページに直接ミントするボタンはありません — Agent ID がないウォレットでは請求は失敗します。</p>
+              <button type="button" class="agent-mini-btn" id="agentFreeBtn">🤖 プロンプトをコピー — 無料ミント（0 BNB）</button>
             </section>
 
-            <div class="mg-divider" aria-hidden="true">Public — Bayar per mint</div>
+            <div class="mg-divider" aria-hidden="true" data-lkey="divPublic">パブリック — ミントごとに支払い</div>
 
             <!-- GROUP 2 — SINGLE PAID 1 / 2 / 3 / 4 -->
             <section class="mint-group mint-group-single" aria-labelledby="mgSingleTitle">
               <div class="mg-head">
                 <span class="mg-step" aria-hidden="true">2</span>
                 <div class="mg-head-main">
-                  <div class="mg-title" id="mgSingleTitle" data-lkey="mgSingleTitle">Mint Satuan — Public</div>
-                  <div class="mg-desc" data-lkey="mgSingleDesc">Pilih jumlah 1, 2, 3 atau 4 • 0.001 BNB per mint • Tanpa Agent ID</div>
+                  <div class="mg-title" id="mgSingleTitle" data-lkey="mgSingleTitle">単品ミント — パブリック</div>
+                  <div class="mg-desc" data-lkey="mgSingleDesc">数量は 1・2・3・4 から選択 • 1ミント 0.001 BNB • Agent ID不要</div>
                 </div>
                 <span class="mg-price" id="singlePriceBadge">0.001 BNB</span>
               </div>
 
-              <div class="qty-grid" role="group" aria-label="Pilih jumlah mint satuan 1 sampai 4 / Quantity 1 to 4">
+              <div class="qty-grid" role="group" aria-label="ミント数量 / Mint quantity">
                 <button type="button" class="qty-choice" id="qty1" data-qty="1" aria-pressed="true"><span class="qc-num">1</span><span class="qc-price">0.001 BNB</span></button>
                 <button type="button" class="qty-choice" id="qty2" data-qty="2" aria-pressed="false"><span class="qc-num">2</span><span class="qc-price">0.002 BNB</span></button>
                 <button type="button" class="qty-choice" id="qty3" data-qty="3" aria-pressed="false"><span class="qc-num">3</span><span class="qc-price">0.003 BNB</span></button>
@@ -644,7 +641,7 @@
               </div>
 
               <div class="single-summary" aria-live="polite">
-                <strong id="qtyNote">Total: 1 mint = 0.001 BNB</strong>
+                <strong id="qtyNote">合計：1ミント = 0.001 BNB</strong>
                 <span id="sakuNote">Bonus +12,000 SAKU</span>
               </div>
 
@@ -656,30 +653,33 @@
                 </button>
                 <div class="bmb-reason" id="paidReason"></div>
               </div>
-              <p class="pack-note" data-lkey="singleNote">Satuan hanya draw <b>Young Sprout / Sakura Bud / Full Bloom</b>. Tidak bisa dapat Legendary &amp; Limited.</p>
+              <button type="button" class="agent-mini-btn" id="agentSingleBtn">🤖 プロンプトをコピー — 1ミント（0.001 BNB）</button>
+              <div class="agent-prompt-box"><div class="codebox" id="agentSinglePrompt">Use my Binance Agentic Wallet on BSC (chain 56) to call mintPaid(1) on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint 1 Sakura for 0.001 BNB in total (public mint — no Agent ID needed). Paid mints always draw Young Sprout, Sakura Bud, or Full Bloom — never a Small Seedling. Simulate first, then execute.</div></div>
+              <p class="pack-note" data-lkey="singleNote">単品は <b>若芽 / 桜のつぼみ / 満開</b> のみ抽選。レジェンダリー＆リミテッドは対象外です。</p>
             </section>
 
-            <div class="mg-divider" aria-hidden="true">Paket — Sekali klik 5 mint</div>
+            <div class="mg-divider" aria-hidden="true" data-lkey="divPack">パック — ワンクリックで5ミント</div>
 
             <!-- GROUP 3 — 5-PACK -->
             <section class="mint-group mint-group-pack" aria-labelledby="mgPackTitle">
               <div class="mg-head">
                 <span class="mg-step" aria-hidden="true">3</span>
                 <div class="mg-head-main">
-                  <div class="mg-title" id="mgPackTitle" data-lkey="mgPackTitle">Paket 5 Sekaligus — Public</div>
-                  <div class="mg-desc" data-lkey="mgPackDesc">Sekali klik langsung 5 mint • Paket hemat • Peluang tertinggi</div>
+                  <div class="mg-title" id="mgPackTitle" data-lkey="mgPackTitle">5個パック — パブリック</div>
+                  <div class="mg-desc" data-lkey="mgPackDesc">ワンクリックで5ミント • お得なパック • 最高の当選チャンス</div>
                 </div>
                 <span class="mg-price">0.004 BNB</span>
               </div>
               <div class="bmb-wrap">
                 <button type="button" class="big-mint-btn pack" id="packBtn">
-                  <span class="bmb-tag">PAKET 5 • BEST CHANCE ★</span>
-                  <span class="bmb-title" id="packTitle">MINT 5 SEKALIGUS — 0.004 BNB</span>
-                  <span class="bmb-sub" id="packSub">5 mint dalam 1 transaksi + 60,000 SAKU</span>
+                  <span class="bmb-tag" data-lkey="packBigTag">5個パック • ベストチャンス ★</span>
+                  <span class="bmb-title" id="packTitle">5個まとめてミント — 0.004 BNB</span>
+                  <span class="bmb-sub" id="packSub">1トランザクションで5ミント + 60,000 SAKU</span>
                 </button>
                 <div class="bmb-reason" id="packReason"></div>
               </div>
-              <p class="pack-note" data-lkey="packNote"><b>Hanya paket 5</b> yang bisa draw <b>Golden Sakura (Legendary)</b> &amp; <b>Sakura Limited Edition</b>. Harga normal 5 satuan = 0.005 BNB, paket ini cuma 0.004 BNB.</p>
+              <button type="button" class="agent-mini-btn" id="agentPackBtn">🤖 プロンプトをコピー — 5個パック（0.004 BNB）</button>
+              <p class="pack-note" data-lkey="packNote"><b>5個パックだけ</b>が <b>金の桜（レジェンダリー）</b> と <b>Sakura リミテッドエディション</b> を抽選できます。単品5回なら 0.005 BNB — このパックは 0.004 BNB です。</p>
             </section>
           </div>
 
@@ -689,14 +689,20 @@
       </div>
       <div class="agent-lane" id="agentLane">
         <h3 data-lkey="laneTitle">プライオリティレーン — Agent ID保有者向け無料ミント</h3>
-        <p data-lkey="laneDesc">あなたのエージェントが、あなたの無料の桜をミントします。プロンプトをコピーして Binance Agentic Wallet に貼り付けてください。</p>
+        <p data-lkey="laneDesc">あなたのエージェントがミントします。無料ミント用、または5個パック用のプロンプトをコピーして Binance Agentic Wallet に貼り付けてください。</p>
         <div class="lane-actions">
-          <button type="button" class="mint-sub-btn primary" id="showPromptBtn" data-lkey="laneShowBtn">🤖 エージェントでミント</button>
-          <button type="button" class="mint-sub-btn" id="copyPromptBtn" data-lkey="laneCopyBtn">エージェント用プロンプトをコピー</button>
+          <button type="button" class="mint-sub-btn primary" id="copyPromptBtn" data-lkey="laneCopyBtn">🤖 プロンプトをコピー — 無料ミント</button>
         </div>
-        <div class="agent-prompt-box" id="agentPromptBox" hidden>
+        <div class="agent-prompt-box" id="agentPromptBox">
           <div class="codebox" id="agentPrompt">Use my Binance Agentic Wallet on BSC (chain 56) to call mintFree() on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint my FREE Sakura (mint #1, Agent ID required). My wallet holds a .ai Agent ID and has not claimed its free mint yet. Mint is open. Simulate first, then execute.</div>
           <p class="lane-note" data-lkey="laneNote">このプロンプトを Binance Agentic Wallet に貼り付けてください。まずシミュレーションが実行され、ミント受付中なので、確認後に実行されます。</p>
+        </div>
+        <div class="lane-actions">
+          <button type="button" class="mint-sub-btn primary" id="copyPackPromptBtn" data-lkey="laneCopyPackBtn">🤖 プロンプトをコピー — 5個パック</button>
+        </div>
+        <div class="agent-prompt-box" id="agentPackPromptBox">
+          <div class="codebox" id="agentPackPrompt">Use my Binance Agentic Wallet on BSC (chain 56) to call mintPaid(5) on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint 5 Sakura at once for 0.004 BNB in total (public mint — no Agent ID needed). The 5-pack is the only mint that can draw the Golden Sakura (Legendary) and the Sakura Limited Edition. Simulate first, then execute.</div>
+          <p class="lane-note" data-lkey="lanePackNote">このプロンプトを Binance Agentic Wallet に貼り付けると、5個パック（5ミント・合計 0.004 BNB）をミントできます。まずシミュレーションが実行され、確認後に実行されます。</p>
         </div>
         <h4 data-lkey="laneCheckTitle">Agent ID をチェック</h4>
         <p data-lkey="laneCheckDesc">Agentic Wallet のアドレスを貼り付けてください。ウォレット接続なしで、チェーン上から Agent ID の保有を読み取ります。</p>
@@ -846,14 +852,16 @@ var I18N = {
     liveTitle:'ライブミント状況<span class="en-sub">Live Mint Status</span>',
     liveDesc:'クリスタルボールの中の桜は、ミントが進むほど大きく育ちます — 状況は15秒ごとにチェーンから自動更新されます。',
     liveChecking:'チェーン確認中…', liveMintedLabel:'ミント済みツリー', liveSold:'販売済み', liveRemainingLabel:'残り',
-    freeBigTag:'Agent ID 限定 · mint #1', freeBigTitle:'🌸 MINT GRATIS',
+    freeBigTag:'Agent ID 限定 · mint #1', freeBigTitle:'🌸 無料ミント',
     freeBigSub:'0 BNB — 1ウォレット1回 · 必ず小さな苗木（コモン）',
     paidBigTag:'パブリック · 誰でもOK', paidBigSub:'若芽 / 桜のつぼみ / 満開 のいずれか + 12,000 SAKU',
-    mgFreeTitle:'GRATIS — Khusus Agent ID', mgFreeDesc:'Mint #1 saja • 1x per wallet • Selalu Small Seedling (Common)',
-    mgSingleTitle:'Mint Satuan — Public', mgSingleDesc:'Pilih jumlah 1, 2, 3 atau 4 • 0.001 BNB per mint • Tanpa Agent ID',
-    singleNote:'Satuan hanya draw <b>Young Sprout / Sakura Bud / Full Bloom</b>. Tidak bisa dapat Legendary &amp; Limited.',
-    mgPackTitle:'Paket 5 Sekaligus — Public', mgPackDesc:'Sekali klik langsung 5 mint • Paket hemat • Peluang tertinggi',
-    packNote:'<b>Hanya paket 5</b> yang bisa draw <b>Golden Sakura (Legendary)</b> &amp; <b>Sakura Limited Edition</b>. Harga normal 5 satuan = 0.005 BNB, paket ini cuma 0.004 BNB.',
+    mgFreeTitle:'無料 — Agent ID限定', mgFreeDesc:'ミント #1 のみ • 1ウォレット1回 • 必ず小さな苗木（コモン）• 請求はエージェントのプロンプト経由のみ',
+    freeAgentOnly:'無料ミントは <b>Agent ID 保有者限定</b>で、請求は<b>エージェントのプロンプト経由のみ</b>です。このページに直接ミントするボタンはありません — Agent ID がないウォレットでは請求は失敗します。',
+    mgSingleTitle:'単品ミント — パブリック', mgSingleDesc:'数量は 1・2・3・4 から選択 • 1ミント 0.001 BNB • Agent ID不要',
+    singleNote:'単品は <b>若芽 / 桜のつぼみ / 満開</b> のみ抽選。レジェンダリー＆リミテッドは対象外です。',
+    mgPackTitle:'5個パック — パブリック', mgPackDesc:'ワンクリックで5ミント • お得なパック • 最高の当選チャンス',
+    packNote:'<b>5個パックだけ</b>が <b>金の桜（レジェンダリー）</b> と <b>Sakura リミテッドエディション</b> を抽選できます。単品5回なら 0.005 BNB — このパックは 0.004 BNB です。',
+    divPublic:'パブリック — ミントごとに支払い', divPack:'パック — ワンクリックで5ミント', packBigTag:'5個パック • ベストチャンス ★',
     heroTagline:'すべての伝説は、一粒の種から始まる。小さな桜が芽吹く瞬間から、世界にひとつだけのリミテッドエディションが咲くまでを見届けよう。',
     heroSub:'Every legend begins as a seed — from the first sprout to the one-and-only Limited Edition bloom.',
     chipSupply:'総供給量 <b>6,666</b>', chipFree:'ミント #1 <b>無料</b> · Agent ID', chipPaid:'有料 <b>0.001 BNB</b>', chipPack:'5個まとめ <b>0.004 BNB</b>',
@@ -887,8 +895,10 @@ var I18N = {
     mintBtn:'ミント — 近日公開', mintNote:'上記の仕様は確定済みです。ミントはローンチ時に開始します。',
     mpWallet:'ウォレット', mpQty:'数量', freeBtn:'無料ミント（Agent ID）',
     laneTitle:'プライオリティレーン — Agent ID保有者向け無料ミント',
-    laneDesc:'あなたのエージェントが、あなたの無料の桜をミントします。プロンプトをコピーして Binance Agentic Wallet に貼り付けてください。',
-    laneShowBtn:'🤖 エージェントでミント', laneCopyBtn:'エージェント用プロンプトをコピー',
+    laneDesc:'あなたのエージェントがミントします。無料ミント用、または5個パック用のプロンプトをコピーして Binance Agentic Wallet に貼り付けてください。',
+    laneShowBtn:'🤖 エージェントでミント', laneCopyBtn:'🤖 プロンプトをコピー — 無料ミント',
+    laneCopyPackBtn:'🤖 プロンプトをコピー — 5個パック',
+    lanePackNote:'このプロンプトを Binance Agentic Wallet に貼り付けると、5個パック（5ミント・合計 0.004 BNB）をミントできます。まずシミュレーションが実行され、確認後に実行されます。',
     laneNote:'このプロンプトを Binance Agentic Wallet に貼り付けてください。まずシミュレーションが実行され、ミント受付中なので、確認後に実行されます。',
     laneCheckTitle:'Agent ID をチェック',
     laneCheckDesc:'Agentic Wallet のアドレスを貼り付けてください。ウォレット接続なしで、チェーン上から Agent ID の保有を読み取ります。',
@@ -930,10 +940,12 @@ var I18N = {
     freeBigTag:'Agent ID only · mint #1', freeBigTitle:'🌸 FREE MINT',
     freeBigSub:'0 BNB — once per wallet · always a Small Seedling (Common)',
     paidBigTag:'Public · everyone welcome', paidBigSub:'Draws Young Sprout / Sakura Bud / Full Bloom + 12,000 SAKU',
-    mgFreeTitle:'FREE — Agent ID Only', mgFreeDesc:'Mint #1 only • Once per wallet • Always Small Seedling (Common)',
+    mgFreeTitle:'FREE — Agent ID Only', mgFreeDesc:'Mint #1 only • Once per wallet • Always Small Seedling (Common) • Claim via agent prompt only',
+    freeAgentOnly:'The free mint is for <b>Agent ID holders only</b> and can be claimed <b>only through the agent prompt</b> below. There is no direct mint button for it on this page — without an Agent ID, the claim will fail.',
     mgSingleTitle:'Single Mint — Public', mgSingleDesc:'Pick 1, 2, 3 or 4 • 0.001 BNB per mint • No Agent ID needed',
     singleNote:'Singles only draw <b>Young Sprout / Sakura Bud / Full Bloom</b>. Cannot draw Legendary &amp; Limited.',
     mgPackTitle:'5-Pack — Public', mgPackDesc:'One click, 5 mints at once • Best value • Highest chance',
+    divPublic:'Public — Pay per mint', divPack:'Pack — 5 mints in one click', packBigTag:'5-PACK • BEST CHANCE ★',
     packNote:'<b>Only the 5-pack</b> can draw <b>Golden Sakura (Legendary)</b> &amp; <b>Sakura Limited Edition</b>. Five singles would cost 0.005 BNB — this pack is just 0.004 BNB.',
     heroTagline:'Every legend begins as a seed — watch a tiny sakura sprout, grow, and bloom into the one-and-only Limited Edition.',
     heroSub:'すべての伝説は、一粒の種から始まる',
@@ -968,8 +980,10 @@ var I18N = {
     mintBtn:'Mint — Coming Soon', mintNote:'The specs above are final. Minting opens at launch.',
     mpWallet:'Wallet', mpQty:'Quantity', freeBtn:'Free Mint (Agent ID)',
     laneTitle:'Priority Lane — free mint for Agent ID holders',
-    laneDesc:'Your agent mints your FREE sakura. Copy the prompt and paste it to your Binance Agentic Wallet.',
-    laneShowBtn:'🤖 Mint with your agent', laneCopyBtn:'Copy agent prompt',
+    laneDesc:'Your agent mints for you. Copy the free-mint prompt — or the 5-pack prompt — and paste it to your Binance Agentic Wallet.',
+    laneShowBtn:'🤖 Mint with your agent', laneCopyBtn:'🤖 Copy prompt — FREE mint',
+    laneCopyPackBtn:'🤖 Copy prompt — 5-pack',
+    lanePackNote:'Paste this prompt to your Binance Agentic Wallet to mint the 5-pack (5 mints, 0.004 BNB total). It simulates first — confirm to execute.',
     laneNote:'Paste this prompt to your Binance Agentic Wallet. It simulates first — mint is open, so it executes after you confirm.',
     laneCheckTitle:'Check your Agent ID',
     laneCheckDesc:'Paste your Agentic Wallet address. The page reads the chain to see if it holds an Agent ID — no wallet connection needed.',
@@ -1190,10 +1204,10 @@ buildSteps(); buildGallery(); setStage(0, true);
       paid1: 'MINT — 0.001 BNB', paid5: 'MINT 5個 — 0.004 BNB',
       paidSub1: '若芽 / 桜のつぼみ / 満開 のいずれか + 12,000 SAKU',
       paidSub5: '5個パック — 金の桜＆リミテッドのチャンス + 60,000 SAKU',
-      packTitleTxt: 'MINT 5 SEKALIGUS — 0.004 BNB',
-      packSubTxt: '5 mint dalam 1 transaksi + 60,000 SAKU • Peluang Golden Sakura & Limited',
-      rPackReady: 'Siap — paket 5 tersedia, sekali klik langsung mint 5.',
-      rPackLimit: 'Paket 5 butuh sisa kuota 5 paid — kuota wallet kamu tidak cukup untuk paket ini.',
+      packTitleTxt: '5個まとめてミント — 0.004 BNB',
+      packSubTxt: '1トランザクションで5ミント + 60,000 SAKU • 金の桜＆リミテッドのチャンス',
+      rPackReady: '準備OK — 5個パックが利用可能です。ワンクリックで5ミント。',
+      rPackLimit: '5個パックには有料ミント枠が5つ必要です — このウォレットの残り枠では足りません。',
       rConnect: 'まず上のボタンでウォレットを接続してください。',
       rClosed: 'ミントはまだ開始していません — 開始までお待ちください。',
       rFreeReady: '利用可能 — Agent ID が必要です。押すだけですぐミント。',
@@ -1276,11 +1290,24 @@ buildSteps(); buildGallery(); setStage(0, true);
       freeReason = document.getElementById('freeReason'), paidReason = document.getElementById('paidReason'), packReason = document.getElementById('packReason'),
       paidTitle = document.getElementById('paidTitle'), paidSub = document.getElementById('paidSub'),
       packTitle = document.getElementById('packTitle'), packSub = document.getElementById('packSub'),
+      agentFreeBtn = document.getElementById('agentFreeBtn'),
+      agentSingleBtn = document.getElementById('agentSingleBtn'),
+      agentPackBtn = document.getElementById('agentPackBtn'),
       statusEl = document.getElementById('mintStatus'),
       floatBtn = document.getElementById('floatMint');
 
   var liveOpen = null, liveMinted = null;
   var account = null, qty = 1, busy = false, wInfo = null;
+
+  /* Single source of truth for the singles agent prompt: the button
+     label, the visible prompt box and the copied text all derive from
+     the currently selected quantity (1–4) and its total price. */
+  function buildSinglePrompt(q){
+    var total = (q * 0.001).toFixed(3);
+    return 'Use my Binance Agentic Wallet on BSC (chain 56) to call mintPaid(' + q + ') on the Sakura contract ' + NFT + ' and mint ' + q + ' Sakura for ' + total + ' BNB in total (public mint — no Agent ID needed). Paid mints always draw Young Sprout, Sakura Bud, or Full Bloom — never a Small Seedling. Simulate first, then execute.';
+  }
+  window.sakuraSinglePrompt = function(){ return buildSinglePrompt(qty); };
+  var agentSinglePromptEl = document.getElementById('agentSinglePrompt');
 
   function setStatus(text, cls, html){
     statusEl.className = 'mint-status' + (cls ? ' ' + cls : '');
@@ -1349,13 +1376,18 @@ buildSteps(); buildGallery(); setStage(0, true);
     var totalBnb = (qty * 0.001).toFixed(3);
     var totalSaku = (qty * 12000).toLocaleString('en-US');
     var isEn = (typeof LANG !== 'undefined' && LANG === 'en');
-    if (qtyNote) qtyNote.textContent = isEn ? ('Total: ' + qty + ' mint' + (qty>1?'s':'') + ' = ' + totalBnb + ' BNB') : ('Total: ' + qty + ' mint = ' + totalBnb + ' BNB');
+    if (qtyNote) qtyNote.textContent = isEn ? ('Total: ' + qty + ' mint' + (qty>1?'s':'') + ' = ' + totalBnb + ' BNB') : ('合計：' + qty + 'ミント = ' + totalBnb + ' BNB');
     if (sakuNote) sakuNote.textContent = 'Bonus +' + totalSaku + ' SAKU';
     if (singlePriceBadge) singlePriceBadge.textContent = totalBnb + ' BNB';
     if (paidTitle) paidTitle.textContent = 'MINT ' + qty + ' — ' + totalBnb + ' BNB';
-    if (paidSub) paidSub.textContent = isEn ? (qty + ' mint' + (qty>1?'s':'') + ' • Young Sprout / Sakura Bud / Full Bloom + ' + totalSaku + ' SAKU') : (qty + ' mint • 若芽 / 桜のつぼみ / 満開 + ' + totalSaku + ' SAKU');
+    if (paidSub) paidSub.textContent = isEn ? (qty + ' mint' + (qty>1?'s':'') + ' • Young Sprout / Sakura Bud / Full Bloom + ' + totalSaku + ' SAKU') : (qty + 'ミント • 若芽 / 桜のつぼみ / 満開 + ' + totalSaku + ' SAKU');
     if (packTitle) packTitle.textContent = t.packTitleTxt || 'MINT 5 — 0.004 BNB';
     if (packSub) packSub.textContent = t.packSubTxt || t.paidSub5;
+    window.__sakuraQty = qty;
+    if (agentFreeBtn) agentFreeBtn.textContent = isEn ? '🤖 Copy agent prompt — FREE mint (0 BNB)' : '🤖 プロンプトをコピー — 無料ミント（0 BNB）';
+    if (agentSingleBtn) agentSingleBtn.textContent = isEn ? ('🤖 Copy agent prompt — ' + qty + ' mint' + (qty>1?'s':'') + ' (' + totalBnb + ' BNB)') : ('🤖 プロンプトをコピー — ' + qty + 'ミント（' + totalBnb + ' BNB）');
+    if (agentSinglePromptEl) agentSinglePromptEl.textContent = buildSinglePrompt(qty);
+    if (agentPackBtn) agentPackBtn.textContent = isEn ? '🤖 Copy agent prompt — 5-pack (0.004 BNB)' : '🤖 プロンプトをコピー — 5個パック（0.004 BNB）';
     if (account && wInfo){
       walletInfo.textContent = t.infoFree + ': ' + (wInfo.free >= 1 ? t.infoDone : t.infoAvail) + ' · ' + t.infoPaid + ': ' + wInfo.paid + ' / 5';
     } else walletInfo.textContent = '';
@@ -1363,7 +1395,7 @@ buildSteps(); buildGallery(); setStage(0, true);
     var freeBlocked = busy || liveOpen !== true || !account || soldOutAll || (wInfo ? wInfo.free >= 1 : false);
     var paidBlocked = busy || liveOpen !== true || !account || soldOutAll || (wInfo ? (wInfo.paid + qty > 5) : false);
     var packBlocked = busy || liveOpen !== true || !account || soldOutAll || (wInfo ? (wInfo.paid + 5 > 5) : false);
-    freeBtn.disabled = freeBlocked;
+    if (freeBtn) freeBtn.disabled = freeBlocked;
     paidBtn.disabled = paidBlocked;
     if (packBtn) packBtn.disabled = packBlocked;
     if (freeReason){
@@ -1487,7 +1519,7 @@ buildSteps(); buildGallery(); setStage(0, true);
   });
   function bindQty(btn, n){ if (btn) btn.addEventListener('click', function(){ qty = n; window.refreshMintUI(); }); }
   bindQty(qty1Btn, 1); bindQty(qty2Btn, 2); bindQty(qty3Btn, 3); bindQty(qty4Btn, 4);
-  freeBtn.addEventListener('click', function(){
+  if (freeBtn) freeBtn.addEventListener('click', function(){
     if (busy) return;
     if (wInfo && wInfo.free >= 1){ setStatus(T().errFreeClaimed, 'err'); return; }
     sendMint(SEL.mintFree, 0n);
@@ -1525,6 +1557,13 @@ buildSteps(); buildGallery(); setStage(0, true);
     'https://bsc-dataseed1.ninicoin.io/'
   ];
   var AGENT_PROMPT = 'Use my Binance Agentic Wallet on BSC (chain 56) to call mintFree() on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint my FREE Sakura (mint #1, Agent ID required). My wallet holds a .ai Agent ID and has not claimed its free mint yet. Mint is open. Simulate first, then execute.';
+  var AGENT_PROMPT_PACK = 'Use my Binance Agentic Wallet on BSC (chain 56) to call mintPaid(5) on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint 5 Sakura at once for 0.004 BNB in total (public mint — no Agent ID needed). The 5-pack is the only mint that can draw the Golden Sakura (Legendary) and the Sakura Limited Edition. Simulate first, then execute.';
+  function singlePrompt(){
+    if (typeof window.sakuraSinglePrompt === 'function') return window.sakuraSinglePrompt();
+    var q = window.__sakuraQty || 1;
+    var total = (q * 0.001).toFixed(3);
+    return 'Use my Binance Agentic Wallet on BSC (chain 56) to call mintPaid(' + q + ') on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint ' + q + ' Sakura for ' + total + ' BNB in total (public mint — no Agent ID needed). Paid mints always draw Young Sprout, Sakura Bud, or Full Bloom — never a Small Seedling. Simulate first, then execute.';
+  }
   var CTXT = {
     ja: {
       copied: 'コピーしました ✓', copyFail: 'コピーに失敗しました — テキストを手動で選択してください',
@@ -1564,33 +1603,48 @@ buildSteps(); buildGallery(); setStage(0, true);
     return tryRpc(0);
   }
 
-  /* ── agent prompt show / copy ── */
-  function openAgentPrompt(){
-    var box = $('agentPromptBox');
-    if (!box) return;
-    $('agentPrompt').textContent = AGENT_PROMPT;
-    box.hidden = false;
-  }
-  var showBtn = $('showPromptBtn'), copyBtn = $('copyPromptBtn');
-  if (showBtn) showBtn.addEventListener('click', openAgentPrompt);
-  if (copyBtn) copyBtn.addEventListener('click', function(){
-    openAgentPrompt();
+  /* ── agent prompts: shown by default, one tap copies ──
+     Every prompt is complete (contract, function, quantity, price) and
+     ready to paste into the Binance Agentic Wallet — nothing to fill in. */
+  var promptEl = $('agentPrompt');
+  if (promptEl) promptEl.textContent = AGENT_PROMPT;
+  var packPromptEl = $('agentPackPrompt');
+  if (packPromptEl) packPromptEl.textContent = AGENT_PROMPT_PACK;
+  function copyText(text, btn, restore){
+    if (!btn) return;
     function done(ok){
-      copyBtn.textContent = ok ? CT().copied : CT().copyFail;
-      setTimeout(function(){
-        var dict = (typeof I18N !== 'undefined') ? I18N[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja'] : null;
-        if (dict && dict.laneCopyBtn) copyBtn.textContent = dict.laneCopyBtn;
-      }, 3000);
+      btn.textContent = ok ? CT().copied : CT().copyFail;
+      if (restore) setTimeout(restore, 2600);
     }
     if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(AGENT_PROMPT).then(function(){ done(true); }, function(){ done(false); });
+      navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
     } else {
       var ta = document.createElement('textarea');
-      ta.value = AGENT_PROMPT; document.body.appendChild(ta); ta.select();
+      ta.value = text; document.body.appendChild(ta); ta.select();
       try { done(document.execCommand('copy')); } catch (e) { done(false); }
       document.body.removeChild(ta);
     }
-  });
+  }
+  function dictRestore(btn, lkey){
+    return function(){
+      var dict = (typeof I18N !== 'undefined') ? I18N[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja'] : null;
+      if (dict && dict[lkey]) btn.textContent = dict[lkey];
+    };
+  }
+  function uiRestore(){
+    if (typeof window.refreshMintUI === 'function') window.refreshMintUI();
+  }
+  function bindCopy(btnId, getText, restore){
+    var btn = $(btnId);
+    if (!btn) return;
+    btn.addEventListener('click', function(){ copyText(getText(), btn, restore); });
+  }
+  var laneFreeBtn = $('copyPromptBtn'), lanePackBtn = $('copyPackPromptBtn');
+  bindCopy('copyPromptBtn', function(){ return AGENT_PROMPT; }, laneFreeBtn ? dictRestore(laneFreeBtn, 'laneCopyBtn') : null);
+  bindCopy('copyPackPromptBtn', function(){ return AGENT_PROMPT_PACK; }, lanePackBtn ? dictRestore(lanePackBtn, 'laneCopyPackBtn') : null);
+  bindCopy('agentFreeBtn', function(){ return AGENT_PROMPT; }, uiRestore);
+  bindCopy('agentSingleBtn', singlePrompt, uiRestore);
+  bindCopy('agentPackBtn', function(){ return AGENT_PROMPT_PACK; }, uiRestore);
 
   /* ── Agent ID checker (read-only) ── */
   var checkBtn = $('agentCheckBtn');
