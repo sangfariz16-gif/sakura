@@ -211,6 +211,33 @@
   .mint-note{color:var(--muted);font-size:13.5px;font-weight:500;margin-top:12px}
   .mint-btn{appearance:none;border:none;background:var(--pink-soft);color:var(--pink-deep);font-family:inherit;font-weight:700;font-size:16px;padding:14px 34px;border-radius:999px;cursor:not-allowed;opacity:.85}
   @media(prefers-color-scheme:dark){.mint-btn{color:#f7c3d6}}
+  .mint-btn.live{background:var(--pink);color:#fff;cursor:pointer;opacity:1;box-shadow:var(--shadow)}
+  .mint-btn.live:hover{background:var(--pink-deep)}
+  .mint-btn.live:disabled{background:var(--pink-soft);color:var(--pink-deep);cursor:wait;opacity:.85;box-shadow:none}
+  .mint-btn:focus-visible,.mint-sub-btn:focus-visible,.qty-btn:focus-visible{outline:2px solid var(--pink-deep);outline-offset:2px}
+
+  /* live mint panel */
+  .mint-panel{max-width:560px;margin:22px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:0 4px 16px rgba(201,58,110,.06);padding:22px;text-align:left}
+  .mint-panel[hidden]{display:none}
+  .mp-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .mp-row + .mp-row{margin-top:16px}
+  .mp-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);flex:none}
+  .wallet-addr{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;word-break:break-all;color:var(--ink);font-weight:600}
+  .qty-toggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+  .qty-btn{appearance:none;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:14px;padding:9px 18px;cursor:pointer;line-height:1.2}
+  .qty-btn[aria-pressed="true"]{background:var(--pink);color:#fff}
+  .qty-note{font-size:13px;color:var(--muted);font-weight:600}
+  .mp-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .mint-sub-btn{appearance:none;border:1px solid var(--pink);background:var(--surface);color:var(--pink-deep);font-family:inherit;font-weight:700;font-size:14.5px;padding:12px 20px;border-radius:999px;cursor:pointer;flex:1 1 200px}
+  .mint-sub-btn.primary{background:var(--pink);color:#fff}
+  .mint-sub-btn.primary:hover{background:var(--pink-deep)}
+  .mint-sub-btn:hover{background:var(--blush)}
+  .mint-sub-btn:disabled{opacity:.55;cursor:not-allowed}
+  .mint-status{margin-top:16px;font-size:14px;font-weight:600;color:var(--muted);min-height:1.4em;word-break:break-word}
+  .mint-status.ok{color:var(--green)}
+  .mint-status.err{color:#c0392b}
+  @media(prefers-color-scheme:dark){.mint-status.err{color:#ff9d8f}}
+  .mint-status a{color:var(--pink-deep);font-weight:700}
 
   /* token */
   .token-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px 28px;text-align:center}
@@ -421,14 +448,34 @@
         <li data-lkey="rule4"><b>レジェンダリー＆リミテッドは5個パックのみ</b> — 単品の有料ミントは若芽から満開までの抽選です。</li>
       </ul>
       <div class="mint-cta">
-        <button class="mint-btn" type="button" disabled data-lkey="mintBtn">ミント — 近日公開</button>
+        <button class="mint-btn" type="button" id="mintBtn" disabled data-lkey="mintBtn">ミント — 近日公開</button>
+        <div class="mint-panel" id="mintPanel" hidden>
+          <div class="mp-row">
+            <span class="mp-label" data-lkey="mpWallet">ウォレット</span>
+            <span class="wallet-addr" id="walletAddr">未接続</span>
+          </div>
+          <div class="qty-note" id="walletInfo" style="margin-top:6px"></div>
+          <div class="mp-row">
+            <span class="mp-label" data-lkey="mpQty">数量</span>
+            <div class="qty-toggle" role="group" aria-label="ミント数量 / Quantity">
+              <button type="button" class="qty-btn" id="qty1" aria-pressed="true">1</button>
+              <button type="button" class="qty-btn" id="qty5" aria-pressed="false">5</button>
+            </div>
+            <span class="qty-note" id="qtyNote">0.001 BNB</span>
+          </div>
+          <div class="mp-actions">
+            <button type="button" class="mint-sub-btn" id="freeBtn" data-lkey="freeBtn">無料ミント（Agent ID）</button>
+            <button type="button" class="mint-sub-btn primary" id="paidBtn">有料ミント · 0.001 BNB</button>
+          </div>
+          <div class="mint-status" id="mintStatus" role="status" aria-live="polite"></div>
+        </div>
         <div class="mint-note" data-lkey="mintNote">上記の仕様は確定済みです。ミントはローンチ時に開始します。</div>
       </div>
       <div class="contract-box center">
         <div class="contract-label" data-lkey="contractNftLabel">NFTコントラクト · BSC（BEP-721）</div>
         <div class="contract-addr">0xF2705A84602369069782624279837A08bdbBf6D6</div>
         <div class="contract-meta">
-          <span class="minted-stat" data-lkey="mintedStat">ミント済み 0 / 6,666</span>
+          <span class="minted-stat" id="mintedStat" data-lkey="mintedStat">ミント済み 0 / 6,666</span>
           <a class="bsc-link" href="https://bscscan.com/address/0xF2705A84602369069782624279837A08bdbBf6D6" target="_blank" rel="noopener" data-lkey="viewBscScan">BscScanで見る ↗</a>
         </div>
       </div>
@@ -590,6 +637,7 @@ var I18N = {
     rule3:'<b>有料プールはわずか666本</b> — 若芽 333 · 桜のつぼみ 200 · 満開 100 · 金の桜 32 · リミテッドエディション 1。',
     rule4:'<b>レジェンダリー＆リミテッドは5個パックのみ</b> — 単品の有料ミントは若芽から満開までの抽選です。',
     mintBtn:'ミント — 近日公開', mintNote:'上記の仕様は確定済みです。ミントはローンチ時に開始します。',
+    mpWallet:'ウォレット', mpQty:'数量', freeBtn:'無料ミント（Agent ID）',
     tokTitle:'ボーナストークン SAKU<span class="en-sub">Bonus Token — SAKU</span>',
     tokDesc:'有料ミントにはトークンボーナスが付きます — あえて小さく抑え、666本の有料ツリーにだけ流れます。トークン名は <b>SAKU</b> です。',
     tkName:'トークン名 — SAKU', tkPer:'有料ミント1回ごとのボーナス',
@@ -652,6 +700,7 @@ var I18N = {
     rule3:'<b>Only 666 paid-pool trees</b> — Young Sprout 333 · Sakura Bud 200 · Full Bloom 100 · Golden Sakura 32 · Limited Edition 1.',
     rule4:'<b>Legendary &amp; Limited are 5-pack only</b> — single paid mints draw from Young Sprout to Full Bloom.',
     mintBtn:'Mint — Coming Soon', mintNote:'The specs above are final. Minting opens at launch.',
+    mpWallet:'Wallet', mpQty:'Quantity', freeBtn:'Free Mint (Agent ID)',
     tokTitle:'Bonus Token — SAKU<span class="en-sub">ボーナストークン SAKU</span>',
     tokDesc:'Every paid mint comes with a token bonus — kept deliberately small, flowing only to the 666 paid trees. The token is named <b>SAKU</b>.',
     tkName:'Token name — SAKU', tkPer:'Bonus per paid mint',
@@ -799,6 +848,7 @@ function setLang(lang){
   document.getElementById('lbClose').setAttribute('aria-label', lang==='ja' ? '閉じる' : 'Close');
   buildSteps(); buildGallery(); setStage(current, true);
   if (lb.classList.contains('open')) openLb(lbIndex);
+  if (typeof window.refreshMintUI === 'function') window.refreshMintUI();
 }
 document.getElementById('langJa').addEventListener('click', function(){ setLang('ja'); });
 document.getElementById('langEn').addEventListener('click', function(){ setLang('en'); });
@@ -831,6 +881,275 @@ buildSteps(); buildGallery(); setStage(0, true);
     p.style.animationDelay = (-Math.random()*18) + 's';
     holder.appendChild(p);
   }
+})();
+</script>
+
+<script>
+/* ── Sakura live mint ──────────────────────────────────────────────
+   Reads mintOpen() / totalMinted() from the NFT contract over a public
+   BSC RPC (no wallet needed). The mint panel activates by itself as
+   soon as mintOpen() returns true on-chain. Minting itself goes
+   through the visitor's wallet (MetaMask / Binance Wallet, chain 56):
+   mintFree() — Agent ID only, 1 per wallet, Small Seedling only;
+   mintPaid(uint256) — public, qty 1 = 0.001 BNB, qty 5 = 0.004 BNB. */
+(function(){
+  var NFT = '0xF2705A84602369069782624279837A08bdbBf6D6';
+  var RPC = 'https://bsc-dataseed1.defibit.io/';
+  var SEL = {
+    mintOpen: '0x24bbd049', totalMinted: '0xa2309ff8',
+    mintFree: '0x8ab53447', mintPaid: '0x26c7f77c',
+    mintedOf: '0x617692dd', freeMintedOf: '0xf7b856b1', paidMintedOf: '0xb41e2f7b'
+  };
+  var ERRORS = {
+    '0x0d9ab13f': 'notAgent', '0x589ed34b': 'mintClosed', '0x52df9fe5': 'soldOut',
+    '0xb92612ed': 'overLimit', '0xa5cc3e35': 'underpaid', '0x775c0fe5': 'freeClaimed',
+    '0xc9467753': 'freeCap'
+  };
+  var PRICE_1 = 1000000000000000n;   /* 0.001 BNB */
+  var PRICE_5 = 4000000000000000n;   /* 0.004 BNB */
+
+  var TXT = {
+    ja: {
+      connect: 'ウォレットを接続', notConnected: '未接続',
+      noteOpen: 'ミント受付中です — ウォレットを接続してミントしてください。',
+      qty1: '0.001 BNB · 若芽 / 桜のつぼみ / 満開 の抽選', qty5: '0.004 BNB · 5個パック — 金の桜とリミテッドエディションのチャンス',
+      paid1: '有料ミント · 0.001 BNB', paid5: '有料ミント · 0.004 BNB（5個）',
+      infoFree: '無料ミント', infoDone: '使用済み', infoAvail: '未使用', infoPaid: '有料ミント',
+      noWallet: 'ウォレットが見つかりません。MetaMask または Binance Wallet をインストールしてから再読み込みしてください。',
+      connecting: 'ウォレットに接続しています…', switching: 'BNB Smart Chain（チェーン56）へ切り替えています…',
+      sign: 'ウォレットでトランザクションを確認してください…',
+      pending: '送信済み — 確定を待っています：', success: 'ミント成功！おめでとうございます 🌸',
+      rejected: 'ウォレットでキャンセルされました。', failed: 'ミントに失敗しました。もう一度お試しください。',
+      viewTx: 'BscScanで見る ↗',
+      errNotAgent: '無料ミントは Agent ID 保有者限定です。このウォレットでは Agent ID が確認できませんでした。',
+      errFreeClaimed: '無料ミントはすでに使用済みです（1ウォレット1回まで）。',
+      errFreeCap: '無料プール（6,000本）は上限に達しました。',
+      errOverLimit: '上限を超えています — 1ウォレット最大6個（無料1回＋有料5回）までです。',
+      errSoldOut: '完売、またはそのプールは残っていません。',
+      errMintClosed: 'ミントはまだ開始していません。',
+      errUnderpaid: '送信額が不足しています。'
+    },
+    en: {
+      connect: 'Connect Wallet', notConnected: 'Not connected',
+      noteOpen: 'Minting is open — connect your wallet to mint.',
+      qty1: '0.001 BNB · draws Young Sprout / Sakura Bud / Full Bloom', qty5: '0.004 BNB · 5-pack — the only chance at Golden Sakura & the Limited Edition',
+      paid1: 'Paid Mint · 0.001 BNB', paid5: 'Paid Mint · 0.004 BNB (5 trees)',
+      infoFree: 'Free mint', infoDone: 'claimed', infoAvail: 'available', infoPaid: 'Paid mints',
+      noWallet: 'No wallet found. Install MetaMask or Binance Wallet, then reload this page.',
+      connecting: 'Connecting to your wallet…', switching: 'Switching to BNB Smart Chain (chain 56)…',
+      sign: 'Confirm the transaction in your wallet…',
+      pending: 'Sent — waiting for confirmation:', success: 'Mint successful! Congratulations 🌸',
+      rejected: 'Cancelled in the wallet.', failed: 'The mint failed. Please try again.',
+      viewTx: 'View on BscScan ↗',
+      errNotAgent: 'The free mint is for Agent ID holders only — no Agent ID was found for this wallet.',
+      errFreeClaimed: 'Your free mint is already claimed (1 per wallet).',
+      errFreeCap: 'The free pool (6,000 trees) is fully claimed.',
+      errOverLimit: 'Over the limit — max 6 per wallet (1 free + 5 paid).',
+      errSoldOut: 'Sold out, or that pool has none left.',
+      errMintClosed: 'Minting is not open yet.',
+      errUnderpaid: 'The amount sent was too low.'
+    }
+  };
+  function T(){ return TXT[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja']; }
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function shortAddr(a){ return a.slice(0, 6) + '…' + a.slice(-4); }
+  function padAddr(a){ return '000000000000000000000000' + a.slice(2).toLowerCase(); }
+  function padUint(n){ var h = n.toString(16); while (h.length < 64) h = '0' + h; return h; }
+
+  var mintBtn = document.getElementById('mintBtn'),
+      panel = document.getElementById('mintPanel'),
+      mintedStat = document.getElementById('mintedStat'),
+      mintNote = document.querySelector('[data-lkey="mintNote"]'),
+      walletAddr = document.getElementById('walletAddr'),
+      walletInfo = document.getElementById('walletInfo'),
+      qty1Btn = document.getElementById('qty1'), qty5Btn = document.getElementById('qty5'),
+      qtyNote = document.getElementById('qtyNote'),
+      freeBtn = document.getElementById('freeBtn'), paidBtn = document.getElementById('paidBtn'),
+      statusEl = document.getElementById('mintStatus');
+
+  var liveOpen = null, liveMinted = null;
+  var account = null, qty = 1, busy = false, wInfo = null;
+
+  function setStatus(text, cls, html){
+    statusEl.className = 'mint-status' + (cls ? ' ' + cls : '');
+    if (html) statusEl.innerHTML = text; else statusEl.textContent = text || '';
+  }
+
+  /* ── read-only chain access via public RPC ── */
+  function rpc(method, params){
+    return fetch(RPC, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: method, params: params })
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if (j.error) throw new Error(j.error.message || 'RPC error');
+      return j.result;
+    });
+  }
+  function callUint(sel, addr){
+    return rpc('eth_call', [{ to: NFT, data: addr ? sel + padAddr(addr) : sel }, 'latest'])
+      .then(function(hex){ return parseInt(hex, 16); });
+  }
+  function refreshChain(){
+    return callUint(SEL.mintOpen).then(function(v){
+      liveOpen = (v === 1);
+      return callUint(SEL.totalMinted);
+    }).then(function(v){
+      liveMinted = v;
+      window.refreshMintUI();
+    }).catch(function(){ /* keep the last known state */ });
+  }
+
+  function loadWalletInfo(){
+    if (!account) { wInfo = null; window.refreshMintUI(); return; }
+    Promise.all([callUint(SEL.freeMintedOf, account), callUint(SEL.paidMintedOf, account)])
+      .then(function(r){ wInfo = { free: r[0], paid: r[1] }; window.refreshMintUI(); })
+      .catch(function(){});
+  }
+
+  /* ── UI state ── */
+  window.refreshMintUI = function(){
+    var t = T();
+    if (liveMinted !== null && mintedStat){
+      mintedStat.textContent = ((typeof LANG !== 'undefined' && LANG === 'en') ? 'Minted ' : 'ミント済み ') + fmt(liveMinted) + ' / 6,666';
+    }
+    if (liveOpen === true){
+      panel.hidden = false;
+      mintBtn.disabled = busy;
+      mintBtn.classList.add('live');
+      mintBtn.textContent = account ? shortAddr(account) : t.connect;
+      if (mintNote) mintNote.textContent = t.noteOpen;
+    } else {
+      panel.hidden = true;
+      mintBtn.disabled = true;
+      mintBtn.classList.remove('live');
+      mintBtn.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'Mint — Coming Soon' : 'ミント — 近日公開';
+      if (mintNote) mintNote.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'The specs above are final. Minting opens at launch.' : '上記の仕様は確定済みです。ミントはローンチ時に開始します。';
+    }
+    walletAddr.textContent = account ? account : t.notConnected;
+    qty1Btn.setAttribute('aria-pressed', qty === 1 ? 'true' : 'false');
+    qty5Btn.setAttribute('aria-pressed', qty === 5 ? 'true' : 'false');
+    qtyNote.textContent = qty === 1 ? t.qty1 : t.qty5;
+    paidBtn.textContent = qty === 1 ? t.paid1 : t.paid5;
+    if (account && wInfo){
+      walletInfo.textContent = t.infoFree + ': ' + (wInfo.free >= 1 ? t.infoDone : t.infoAvail) + ' · ' + t.infoPaid + ': ' + wInfo.paid + ' / 5';
+    } else walletInfo.textContent = '';
+    var soldOutAll = liveMinted !== null && liveMinted >= 6666;
+    freeBtn.disabled = busy || !account || soldOutAll || (wInfo ? wInfo.free >= 1 : false);
+    paidBtn.disabled = busy || !account || soldOutAll || (wInfo ? (wInfo.paid + qty > 5) : false);
+  };
+
+  /* ── wallet ── */
+  function provider(){ return window.ethereum || null; }
+  function ensureChain(p){
+    return p.request({ method: 'eth_chainId' }).then(function(id){
+      if (id === '0x38') return;
+      setStatus(T().switching, '');
+      return p.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x38' }] })
+        .catch(function(e){
+          if (e && e.code === 4902){
+            return p.request({ method: 'wallet_addEthereumChain', params: [{
+              chainId: '0x38', chainName: 'BNB Smart Chain',
+              nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+              rpcUrls: ['https://bsc-dataseed.binance.org/'],
+              blockExplorerUrls: ['https://bscscan.com']
+            }] });
+          }
+          throw e;
+        });
+    });
+  }
+  function connect(){
+    var p = provider();
+    if (!p){ setStatus(T().noWallet, 'err'); return Promise.resolve(); }
+    busy = true; window.refreshMintUI(); setStatus(T().connecting, '');
+    return ensureChain(p).then(function(){
+      return p.request({ method: 'eth_requestAccounts' });
+    }).then(function(accs){
+      account = (accs && accs[0]) ? accs[0] : null;
+      busy = false; setStatus('', '');
+      window.refreshMintUI(); loadWalletInfo();
+    }).catch(function(e){
+      busy = false; window.refreshMintUI();
+      setStatus(e && e.code === 4001 ? T().rejected : T().failed, 'err');
+    });
+  }
+  function bindProviderEvents(){
+    var p = provider();
+    if (!p || !p.on || bindProviderEvents.done) return;
+    bindProviderEvents.done = true;
+    p.on('accountsChanged', function(accs){
+      account = (accs && accs[0]) ? accs[0] : null;
+      wInfo = null; window.refreshMintUI(); loadWalletInfo();
+    });
+    p.on('chainChanged', function(){ refreshChain(); loadWalletInfo(); });
+  }
+
+  function errorText(e){
+    var t = T(), blob = '';
+    try { blob = JSON.stringify(e || {}); } catch(_){}
+    blob += ' ' + (e && e.message ? e.message : '') + ' ' + (e && e.data ? e.data : '');
+    for (var sel in ERRORS){
+      if (blob.indexOf(sel) !== -1){
+        return { notAgent: t.errNotAgent, mintClosed: t.errMintClosed, soldOut: t.errSoldOut,
+                 overLimit: t.errOverLimit, underpaid: t.errUnderpaid, freeClaimed: t.errFreeClaimed,
+                 freeCap: t.errFreeCap }[ERRORS[sel]];
+      }
+    }
+    if (e && e.code === 4001) return t.rejected;
+    return t.failed;
+  }
+
+  function waitReceipt(hash){
+    return rpc('eth_getTransactionReceipt', [hash]).then(function(rec){
+      if (!rec) return new Promise(function(res){ setTimeout(res, 3000); }).then(function(){ return waitReceipt(hash); });
+      return rec;
+    });
+  }
+  function sendMint(data, value){
+    var p = provider();
+    if (!p){ setStatus(T().noWallet, 'err'); return; }
+    if (!account){ connect().then(function(){ if (account) sendMint(data, value); }); return; }
+    busy = true; window.refreshMintUI(); setStatus(T().sign, '');
+    ensureChain(p).then(function(){
+      return p.request({ method: 'eth_sendTransaction', params: [{ from: account, to: NFT, data: data, value: '0x' + value.toString(16) }] });
+    }).then(function(hash){
+      var t = T();
+      setStatus(t.pending + ' <a href="https://bscscan.com/tx/' + hash + '" target="_blank" rel="noopener">' + t.viewTx + '</a>', '', true);
+      return waitReceipt(hash).then(function(rec){
+        busy = false;
+        if (rec && rec.status === '0x1'){
+          setStatus(T().success + ' <a href="https://bscscan.com/tx/' + hash + '" target="_blank" rel="noopener">' + T().viewTx + '</a>', 'ok', true);
+        } else setStatus(T().failed, 'err');
+        window.refreshMintUI(); refreshChain(); loadWalletInfo();
+      });
+    }).catch(function(e){
+      busy = false; window.refreshMintUI();
+      setStatus(errorText(e), 'err');
+      refreshChain();
+    });
+  }
+
+  mintBtn.addEventListener('click', function(){
+    if (liveOpen !== true) return;
+    if (!account){ bindProviderEvents(); connect(); }
+    else panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  qty1Btn.addEventListener('click', function(){ qty = 1; window.refreshMintUI(); });
+  qty5Btn.addEventListener('click', function(){ qty = 5; window.refreshMintUI(); });
+  freeBtn.addEventListener('click', function(){
+    if (busy) return;
+    if (wInfo && wInfo.free >= 1){ setStatus(T().errFreeClaimed, 'err'); return; }
+    sendMint(SEL.mintFree, 0n);
+  });
+  paidBtn.addEventListener('click', function(){
+    if (busy) return;
+    if (wInfo && wInfo.paid + qty > 5){ setStatus(T().errOverLimit, 'err'); return; }
+    sendMint(SEL.mintPaid + padUint(qty), qty === 5 ? PRICE_5 : PRICE_1);
+  });
+
+  bindProviderEvents();
+  window.refreshMintUI();
+  refreshChain();
+  setInterval(refreshChain, 15000);
 })();
 </script>
 </body>
