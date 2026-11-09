@@ -239,6 +239,30 @@
   @media(prefers-color-scheme:dark){.mint-status.err{color:#ff9d8f}}
   .mint-status a{color:var(--pink-deep);font-weight:700}
 
+  /* floating mint button */
+  body{padding-bottom:84px}
+  .float-mint{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;display:inline-flex;align-items:center;background:var(--pink-soft);color:var(--pink-deep);font-weight:700;font-size:15px;text-decoration:none;padding:13px 22px;border-radius:999px;box-shadow:0 12px 28px rgba(201,58,110,.28);border:1px solid var(--line)}
+  .float-mint.live{background:var(--pink);color:#fff;border-color:transparent}
+  .float-mint.live:hover{background:var(--pink-deep)}
+  .float-mint:focus-visible{outline:2px solid var(--pink-deep);outline-offset:2px}
+  @media(prefers-color-scheme:dark){.float-mint{color:#f7c3d6}.float-mint.live{color:#fff}}
+  @media(max-width:640px){.float-mint{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));font-size:14px;padding:12px 18px}}
+
+  /* priority lane — agent prompt mint + Agent ID checker */
+  .agent-lane{max-width:760px;margin:22px auto 0;background:var(--surface);border:1px solid var(--pink);border-radius:22px;box-shadow:var(--shadow);padding:24px 22px;text-align:left}
+  .agent-lane h3{font-size:20px;margin:0 0 8px}
+  .agent-lane h4{font-family:"Noto Serif JP","Marcellus",serif;font-weight:600;font-size:17px;margin:22px 0 6px}
+  .agent-lane p{color:var(--muted);font-weight:500;margin:0;font-size:15px}
+  .lane-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .agent-prompt-box{margin-top:14px}
+  .agent-prompt-box[hidden]{display:none}
+  .codebox{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.65;word-break:break-word;color:var(--ink)}
+  .lane-note{margin-top:10px;font-size:13.5px;color:var(--muted);font-weight:500}
+  .lane-check-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lane-check-row input{flex:1 1 260px;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;padding:12px 16px;border-radius:999px;min-width:0}
+  .lane-check-row input:focus-visible{outline:2px solid var(--pink-deep);outline-offset:1px}
+  .lane-check-row .mint-sub-btn{flex:0 1 auto}
+
   /* token */
   .token-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px 28px;text-align:center}
   .tk-big{font-family:"Marcellus",serif;font-size:clamp(38px,7vw,52px);color:var(--pink-deep);line-height:1.1}
@@ -471,6 +495,25 @@
         </div>
         <div class="mint-note" data-lkey="mintNote">上記の仕様は確定済みです。ミントはローンチ時に開始します。</div>
       </div>
+      <div class="agent-lane" id="agentLane">
+        <h3 data-lkey="laneTitle">プライオリティレーン — Agent ID保有者向け無料ミント</h3>
+        <p data-lkey="laneDesc">あなたのエージェントが、あなたの無料の桜をミントします。プロンプトをコピーして Binance Agentic Wallet に貼り付けてください。</p>
+        <div class="lane-actions">
+          <button type="button" class="mint-sub-btn primary" id="showPromptBtn" data-lkey="laneShowBtn">🤖 エージェントでミント</button>
+          <button type="button" class="mint-sub-btn" id="copyPromptBtn" data-lkey="laneCopyBtn">エージェント用プロンプトをコピー</button>
+        </div>
+        <div class="agent-prompt-box" id="agentPromptBox" hidden>
+          <div class="codebox" id="agentPrompt">Use my Binance Agentic Wallet on BSC (chain 56) to call mintFree() on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint my FREE Sakura (mint #1, Agent ID required). My wallet holds a .ai Agent ID and has not claimed its free mint yet. Mint is open. Simulate first, then execute.</div>
+          <p class="lane-note" data-lkey="laneNote">このプロンプトを Binance Agentic Wallet に貼り付けてください。まずシミュレーションが実行され、ミント受付中なので、確認後に実行されます。</p>
+        </div>
+        <h4 data-lkey="laneCheckTitle">Agent ID をチェック</h4>
+        <p data-lkey="laneCheckDesc">Agentic Wallet のアドレスを貼り付けてください。ウォレット接続なしで、チェーン上から Agent ID の保有を読み取ります。</p>
+        <div class="lane-check-row">
+          <input type="text" id="agentAddr" placeholder="0x…" autocomplete="off" spellcheck="false" aria-label="Wallet address / ウォレットアドレス">
+          <button type="button" class="mint-sub-btn" id="agentCheckBtn" data-lkey="laneCheckBtn">Agent IDをチェック</button>
+        </div>
+        <div class="mint-status" id="agentCheckOut" role="status" aria-live="polite"></div>
+      </div>
       <div class="contract-box center">
         <div class="contract-label" data-lkey="contractNftLabel">NFTコントラクト · BSC（BEP-721）</div>
         <div class="contract-addr">0xF2705A84602369069782624279837A08bdbBf6D6</div>
@@ -587,6 +630,8 @@
   </footer>
 </main>
 
+<a class="float-mint" id="floatMint" href="#mint">ミント — 近日公開</a>
+
 <!-- LIGHTBOX -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="アートワークビューア">
   <figure>
@@ -638,6 +683,13 @@ var I18N = {
     rule4:'<b>レジェンダリー＆リミテッドは5個パックのみ</b> — 単品の有料ミントは若芽から満開までの抽選です。',
     mintBtn:'ミント — 近日公開', mintNote:'上記の仕様は確定済みです。ミントはローンチ時に開始します。',
     mpWallet:'ウォレット', mpQty:'数量', freeBtn:'無料ミント（Agent ID）',
+    laneTitle:'プライオリティレーン — Agent ID保有者向け無料ミント',
+    laneDesc:'あなたのエージェントが、あなたの無料の桜をミントします。プロンプトをコピーして Binance Agentic Wallet に貼り付けてください。',
+    laneShowBtn:'🤖 エージェントでミント', laneCopyBtn:'エージェント用プロンプトをコピー',
+    laneNote:'このプロンプトを Binance Agentic Wallet に貼り付けてください。まずシミュレーションが実行され、ミント受付中なので、確認後に実行されます。',
+    laneCheckTitle:'Agent ID をチェック',
+    laneCheckDesc:'Agentic Wallet のアドレスを貼り付けてください。ウォレット接続なしで、チェーン上から Agent ID の保有を読み取ります。',
+    laneCheckBtn:'Agent IDをチェック',
     tokTitle:'ボーナストークン SAKU<span class="en-sub">Bonus Token — SAKU</span>',
     tokDesc:'有料ミントにはトークンボーナスが付きます — あえて小さく抑え、666本の有料ツリーにだけ流れます。トークン名は <b>SAKU</b> です。',
     tkName:'トークン名 — SAKU', tkPer:'有料ミント1回ごとのボーナス',
@@ -701,6 +753,13 @@ var I18N = {
     rule4:'<b>Legendary &amp; Limited are 5-pack only</b> — single paid mints draw from Young Sprout to Full Bloom.',
     mintBtn:'Mint — Coming Soon', mintNote:'The specs above are final. Minting opens at launch.',
     mpWallet:'Wallet', mpQty:'Quantity', freeBtn:'Free Mint (Agent ID)',
+    laneTitle:'Priority Lane — free mint for Agent ID holders',
+    laneDesc:'Your agent mints your FREE sakura. Copy the prompt and paste it to your Binance Agentic Wallet.',
+    laneShowBtn:'🤖 Mint with your agent', laneCopyBtn:'Copy agent prompt',
+    laneNote:'Paste this prompt to your Binance Agentic Wallet. It simulates first — mint is open, so it executes after you confirm.',
+    laneCheckTitle:'Check your Agent ID',
+    laneCheckDesc:'Paste your Agentic Wallet address. The page reads the chain to see if it holds an Agent ID — no wallet connection needed.',
+    laneCheckBtn:'Check Agent ID',
     tokTitle:'Bonus Token — SAKU<span class="en-sub">ボーナストークン SAKU</span>',
     tokDesc:'Every paid mint comes with a token bonus — kept deliberately small, flowing only to the 666 paid trees. The token is named <b>SAKU</b>.',
     tkName:'Token name — SAKU', tkPer:'Bonus per paid mint',
@@ -911,6 +970,7 @@ buildSteps(); buildGallery(); setStage(0, true);
   var TXT = {
     ja: {
       connect: 'ウォレットを接続', notConnected: '未接続',
+      floatClosed: 'ミント — 近日公開', floatOpen: '今すぐミント',
       noteOpen: 'ミント受付中です — ウォレットを接続してミントしてください。',
       qty1: '0.001 BNB · 若芽 / 桜のつぼみ / 満開 の抽選', qty5: '0.004 BNB · 5個パック — 金の桜とリミテッドエディションのチャンス',
       paid1: '有料ミント · 0.001 BNB', paid5: '有料ミント · 0.004 BNB（5個）',
@@ -931,6 +991,7 @@ buildSteps(); buildGallery(); setStage(0, true);
     },
     en: {
       connect: 'Connect Wallet', notConnected: 'Not connected',
+      floatClosed: 'Mint — Coming Soon', floatOpen: 'Mint Now',
       noteOpen: 'Minting is open — connect your wallet to mint.',
       qty1: '0.001 BNB · draws Young Sprout / Sakura Bud / Full Bloom', qty5: '0.004 BNB · 5-pack — the only chance at Golden Sakura & the Limited Edition',
       paid1: 'Paid Mint · 0.001 BNB', paid5: 'Paid Mint · 0.004 BNB (5 trees)',
@@ -965,7 +1026,8 @@ buildSteps(); buildGallery(); setStage(0, true);
       qty1Btn = document.getElementById('qty1'), qty5Btn = document.getElementById('qty5'),
       qtyNote = document.getElementById('qtyNote'),
       freeBtn = document.getElementById('freeBtn'), paidBtn = document.getElementById('paidBtn'),
-      statusEl = document.getElementById('mintStatus');
+      statusEl = document.getElementById('mintStatus'),
+      floatBtn = document.getElementById('floatMint');
 
   var liveOpen = null, liveMinted = null;
   var account = null, qty = 1, busy = false, wInfo = null;
@@ -1016,12 +1078,14 @@ buildSteps(); buildGallery(); setStage(0, true);
       mintBtn.disabled = busy;
       mintBtn.classList.add('live');
       mintBtn.textContent = account ? shortAddr(account) : t.connect;
+      if (floatBtn){ floatBtn.textContent = t.floatOpen; floatBtn.classList.add('live'); }
       if (mintNote) mintNote.textContent = t.noteOpen;
     } else {
       panel.hidden = true;
       mintBtn.disabled = true;
       mintBtn.classList.remove('live');
       mintBtn.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'Mint — Coming Soon' : 'ミント — 近日公開';
+      if (floatBtn){ floatBtn.textContent = t.floatClosed; floatBtn.classList.remove('live'); }
       if (mintNote) mintNote.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'The specs above are final. Minting opens at launch.' : '上記の仕様は確定済みです。ミントはローンチ時に開始します。';
     }
     walletAddr.textContent = account ? account : t.notConnected;
@@ -1150,6 +1214,109 @@ buildSteps(); buildGallery(); setStage(0, true);
   window.refreshMintUI();
   refreshChain();
   setInterval(refreshChain, 15000);
+})();
+</script>
+
+<script>
+/* ── Priority Lane: agent prompt + Agent ID checker ───────────────
+   Pattern follows PanduAGENT. The prompt is pasted into the visitor's
+   Binance Agentic Wallet, which calls mintFree() on the Sakura NFT.
+   The checker reads the .ai Agent ID registry (balanceOf) over public
+   BSC RPCs — read-only, no wallet connection needed. */
+(function(){
+  var REGISTRY = '0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F';
+  var SEL_BALANCE = '0x70a08231'; /* balanceOf(address) */
+  var RPCS = [
+    'https://bsc-dataseed1.defibit.io/',
+    'https://bsc-dataseed.binance.org/',
+    'https://bsc-dataseed1.ninicoin.io/'
+  ];
+  var AGENT_PROMPT = 'Use my Binance Agentic Wallet on BSC (chain 56) to call mintFree() on the Sakura contract 0xF2705A84602369069782624279837A08bdbBf6D6 and mint my FREE Sakura (mint #1, Agent ID required). My wallet holds a .ai Agent ID and has not claimed its free mint yet. Mint is open. Simulate first, then execute.';
+  var CTXT = {
+    ja: {
+      copied: 'コピーしました ✓', copyFail: 'コピーに失敗しました — テキストを手動で選択してください',
+      invalid: '有効な 0x アドレスを入力してください（16進数40文字）。',
+      checking: 'チェーンで確認しています…',
+      has: '✓ このウォレットは Agent ID（.ai）を保有しています — エージェント経由で無料ミント（ミント #1）を請求できます。',
+      none: '✗ このアドレスに Agent ID は見つかりませんでした — 無料ミントには Agent ID が必要です。まず Binance アプリで無料の .ai Agent ID を取得してください。',
+      fail: '現在チェーンを読み取れませんでした — もう一度お試しください。'
+    },
+    en: {
+      copied: 'Copied ✓', copyFail: 'Copy failed — select the text manually',
+      invalid: 'Enter a valid 0x address (40 hex characters).',
+      checking: 'Checking on-chain…',
+      has: '✓ This wallet holds an Agent ID (.ai) — it can claim the FREE Sakura mint (mint #1) through its agent.',
+      none: '✗ No Agent ID found for this address — the free mint needs an Agent ID. Claim a free .ai Agent ID in the Binance app first.',
+      fail: 'Could not read the chain right now — please try again.'
+    }
+  };
+  function CT(){ return CTXT[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja']; }
+  function $(id){ return document.getElementById(id); }
+
+  function ethCall(to, data){
+    var body = JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to: to, data: data }, 'latest'] });
+    function tryRpc(i){
+      if (i >= RPCS.length) return Promise.reject(new Error('all RPCs failed'));
+      var ctrl = ('AbortController' in window) ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 10000) : null;
+      return fetch(RPCS[i], { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, signal: ctrl ? ctrl.signal : undefined })
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          if (timer) clearTimeout(timer);
+          if (j && j.result && j.result !== '0x') return j.result;
+          return tryRpc(i + 1);
+        })
+        .catch(function(){ if (timer) clearTimeout(timer); return tryRpc(i + 1); });
+    }
+    return tryRpc(0);
+  }
+
+  /* ── agent prompt show / copy ── */
+  function openAgentPrompt(){
+    var box = $('agentPromptBox');
+    if (!box) return;
+    $('agentPrompt').textContent = AGENT_PROMPT;
+    box.hidden = false;
+  }
+  var showBtn = $('showPromptBtn'), copyBtn = $('copyPromptBtn');
+  if (showBtn) showBtn.addEventListener('click', openAgentPrompt);
+  if (copyBtn) copyBtn.addEventListener('click', function(){
+    openAgentPrompt();
+    function done(ok){
+      copyBtn.textContent = ok ? CT().copied : CT().copyFail;
+      setTimeout(function(){
+        var dict = (typeof I18N !== 'undefined') ? I18N[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja'] : null;
+        if (dict && dict.laneCopyBtn) copyBtn.textContent = dict.laneCopyBtn;
+      }, 3000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(AGENT_PROMPT).then(function(){ done(true); }, function(){ done(false); });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = AGENT_PROMPT; document.body.appendChild(ta); ta.select();
+      try { done(document.execCommand('copy')); } catch (e) { done(false); }
+      document.body.removeChild(ta);
+    }
+  });
+
+  /* ── Agent ID checker (read-only) ── */
+  var checkBtn = $('agentCheckBtn');
+  if (checkBtn) checkBtn.addEventListener('click', function(){
+    var addr = ($('agentAddr').value || '').trim();
+    var out = $('agentCheckOut');
+    var t = CT();
+    if (!/^0x[0-9a-fA-F]{40}$/.test(addr)){ out.className = 'mint-status err'; out.textContent = t.invalid; return; }
+    out.className = 'mint-status'; out.textContent = t.checking;
+    var data = SEL_BALANCE + '000000000000000000000000' + addr.slice(2).toLowerCase();
+    ethCall(REGISTRY, data).then(function(bal){
+      var n = parseInt(bal, 16);
+      out.className = 'mint-status ' + (n > 0 ? 'ok' : 'err');
+      out.textContent = n > 0 ? t.has : t.none;
+    }).catch(function(){
+      out.className = 'mint-status err';
+      out.textContent = t.fail;
+    });
+  });
 })();
 </script>
 </body>
