@@ -55,6 +55,34 @@
   .lang-toggle button:focus-visible{outline:2px solid var(--pink-deep);outline-offset:-2px}
   @media(max-width:640px){.bar{gap:10px}.lang-toggle{margin-left:auto}}
 
+  /* hamburger + mobile menu */
+  .hamburger{display:none;appearance:none;border:1px solid var(--line);background:var(--surface);width:42px;height:42px;border-radius:12px;cursor:pointer;flex:none;padding:0}
+  .hamburger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;margin:0 auto;transition:transform .25s ease,opacity .2s ease}
+  .hamburger span+span{margin-top:5px}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .hamburger:focus-visible{outline:2px solid var(--pink-deep);outline-offset:2px}
+  .mobile-menu{display:none;border-top:1px solid var(--line);background:var(--header);padding:6px 0 12px}
+  .mobile-menu.open{display:block}
+  .mobile-menu a{display:flex;align-items:center;justify-content:space-between;text-decoration:none;font-weight:700;font-size:15.5px;padding:11px 2px;border-bottom:1px solid var(--line);color:var(--ink)}
+  .mobile-menu a:last-child{border-bottom:none}
+  .mobile-menu a .arr{color:var(--pink);font-size:13px;flex:none;margin-left:10px}
+  .mobile-menu a.x-m{color:var(--pink-deep)}
+  @media(max-width:640px){.badge{display:none}.hamburger{display:block}}
+  @media(min-width:641px){.mobile-menu{display:none!important}}
+
+  /* faq */
+  .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .faq-item{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .faq-item summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:12px}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary .q-petal{color:var(--pink);flex:none}
+  .faq-item summary .chev{margin-left:auto;color:var(--pink-deep);transition:transform .25s ease;flex:none;font-size:14px}
+  .faq-item[open] summary .chev{transform:rotate(180deg)}
+  .faq-item .faq-a{padding:0 22px 18px;color:var(--muted);font-weight:500;font-size:15px}
+  .faq-item .faq-a b{color:var(--ink)}
+
   /* petals */
   #petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
   .petal{position:absolute;top:-4vh;width:14px;height:11px;background:var(--pink-soft);border-radius:12px 2px 12px 2px;opacity:.75;animation:fall linear infinite}
@@ -210,6 +238,9 @@
       <button type="button" id="langJa" aria-pressed="true">日本語</button>
       <button type="button" id="langEn" aria-pressed="false">EN</button>
     </div>
+    <button type="button" class="hamburger" id="hamburger" aria-expanded="false" aria-controls="mobileMenu" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
     <nav>
       <a href="#grow" data-lkey="navGrow">成長</a>
       <a href="#collection" data-lkey="navCollection">コレクション</a>
@@ -217,8 +248,22 @@
       <a href="#mint" data-lkey="navMint">ミント</a>
       <a href="#token" data-lkey="navToken">トークン</a>
       <a href="#market" data-lkey="navMarket">マーケット</a>
+      <a href="#faq" data-lkey="navFaq">FAQ</a>
       <a class="x-nav" href="https://x.com/sakurashenft" target="_blank" rel="noopener" data-lkey="navX">公式X</a>
     </nav>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="wrap">
+      <a href="#grow"><span data-lkey="navGrow">成長</span><span class="arr">→</span></a>
+      <a href="#collection"><span data-lkey="navCollection">コレクション</span><span class="arr">→</span></a>
+      <a href="#rarity"><span data-lkey="navRarity">レアリティ</span><span class="arr">→</span></a>
+      <a href="#limited"><span data-lkey="navLimited">限定</span><span class="arr">→</span></a>
+      <a href="#mint"><span data-lkey="navMint">ミント</span><span class="arr">→</span></a>
+      <a href="#token"><span data-lkey="navToken">トークン</span><span class="arr">→</span></a>
+      <a href="#market"><span data-lkey="navMarket">マーケット</span><span class="arr">→</span></a>
+      <a href="#faq"><span data-lkey="navFaq">FAQ</span><span class="arr">→</span></a>
+      <a class="x-m" href="https://x.com/sakurashenft" target="_blank" rel="noopener"><span data-lkey="navX">公式X</span><span class="arr">↗</span></a>
+    </div>
   </div>
 </header>
 
@@ -394,6 +439,42 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-lkey="faqTitle">よくある質問<span class="en-sub">FAQ</span></h2>
+        <p data-lkey="faqDesc">ミントの仕組み、SAKUボーナス、マーケットプレイスについて、よく寄せられる質問をまとめました。</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ1">無料ミントの条件を教えてください</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA1">Agent ID 保有者限定で、1ウォレットにつき1回までです。無料ミントは必ず<b>小さな苗木</b>（コモン）になり、無料プールは全6,666本のうち6,000本までです。</div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ2">有料ミントで小さな苗木（コモン）が出ることはありますか？</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA2">ありません。有料ミントは苗木ステージを完全にスキップし、抽選は必ず<b>若芽</b>、<b>桜のつぼみ</b>、<b>満開</b>のいずれかになります。</div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ3">金の桜とリミテッドエディションはどうすれば当たりますか？</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA3"><b>5個まとめミント</b>（0.004 BNB）だけが、金の桜（レジェンダリー）と Sakura リミテッドエディションの抽選対象です。当選は保証されません — あくまでチャンスです。</div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ4">SAKUボーナスはどうやって受け取れますか？</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA4">有料ミント1回ごとに <b>12,000 SAKU</b> が付与され、1ウォレット最大 60,000 SAKU までです。無料ミントにボーナスはありません。</div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ5">1つのウォレットで何個までミントできますか？</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA5">最大<b>6個</b>まで — 無料ミント1回 + 有料ミント5回です。</div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="q-petal">✿</span><span data-lkey="faqQ6">マーケットプレイスはいつ開きますか？</span><span class="chev">▾</span></summary>
+          <div class="faq-a" data-lkey="faqA6">ミントのローンチ後にオープンします。保有者は6つの成長ステージすべてを出品・取引できます。</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="wrap">
       <div class="fb">SAKU<span>RA</span></div>
@@ -423,7 +504,7 @@
 var LANG = 'ja';
 var I18N = {
   ja: {
-    badge:'プレビュー', navGrow:'成長', navCollection:'コレクション', navRarity:'レアリティ', navMint:'ミント', navToken:'トークン', navMarket:'マーケット', navX:'公式X',
+    badge:'プレビュー', navGrow:'成長', navCollection:'コレクション', navRarity:'レアリティ', navMint:'ミント', navToken:'トークン', navMarket:'マーケット', navLimited:'限定', navFaq:'FAQ', navX:'公式X',
     heroTagline:'すべての伝説は、一粒の種から始まる。小さな桜が芽吹く瞬間から、世界にひとつだけのリミテッドエディションが咲くまでを見届けよう。',
     heroSub:'Every legend begins as a seed — from the first sprout to the one-and-only Limited Edition bloom.',
     chipSupply:'総供給量 <b>6,666</b>', chipFree:'ミント #1 <b>無料</b> · Agent ID', chipPaid:'有料 <b>0.001 BNB</b>', chipPack:'5個まとめ <b>0.004 BNB</b>',
@@ -463,10 +544,24 @@ var I18N = {
     mktP:'ミント開始後、保有者はコレクション専用マーケットプレイスで桜を出品・取引できます — 小さな苗木から一点物のリミテッドエディションまで。',
     mktLi1:'6つの成長ステージすべてを売買可能', mktLi2:'リミテッドエディションが取引できる唯一の場所', mktLi3:'ミントローンチ後にオープン',
     footLine:'6,666本の木 — 小さな苗木から Sakura リミテッドエディションまで。',
-    footX:'公式X — @sakurashenft', footToken:'トークン：SAKU', footNote:'プレビューページ — ミントはローンチ時に開始します。'
+    footX:'公式X — @sakurashenft', footToken:'トークン：SAKU', footNote:'プレビューページ — ミントはローンチ時に開始します。',
+    faqTitle:'よくある質問<span class="en-sub">FAQ</span>',
+    faqDesc:'ミントの仕組み、SAKUボーナス、マーケットプレイスについて、よく寄せられる質問をまとめました。',
+    faqQ1:'無料ミントの条件を教えてください',
+    faqA1:'Agent ID 保有者限定で、1ウォレットにつき1回までです。無料ミントは必ず<b>小さな苗木</b>（コモン）になり、無料プールは全6,666本のうち6,000本までです。',
+    faqQ2:'有料ミントで小さな苗木（コモン）が出ることはありますか？',
+    faqA2:'ありません。有料ミントは苗木ステージを完全にスキップし、抽選は必ず<b>若芽</b>、<b>桜のつぼみ</b>、<b>満開</b>のいずれかになります。',
+    faqQ3:'金の桜とリミテッドエディションはどうすれば当たりますか？',
+    faqA3:'<b>5個まとめミント</b>（0.004 BNB）だけが、金の桜（レジェンダリー）と Sakura リミテッドエディションの抽選対象です。当選は保証されません — あくまでチャンスです。',
+    faqQ4:'SAKUボーナスはどうやって受け取れますか？',
+    faqA4:'有料ミント1回ごとに <b>12,000 SAKU</b> が付与され、1ウォレット最大 60,000 SAKU までです。無料ミントにボーナスはありません。',
+    faqQ5:'1つのウォレットで何個までミントできますか？',
+    faqA5:'最大<b>6個</b>まで — 無料ミント1回 + 有料ミント5回です。',
+    faqQ6:'マーケットプレイスはいつ開きますか？',
+    faqA6:'ミントのローンチ後にオープンします。保有者は6つの成長ステージすべてを出品・取引できます。'
   },
   en: {
-    badge:'Preview', navGrow:'Grow', navCollection:'Collection', navRarity:'Rarity', navMint:'Mint', navToken:'Token', navMarket:'Market', navX:'Official X',
+    badge:'Preview', navGrow:'Grow', navCollection:'Collection', navRarity:'Rarity', navMint:'Mint', navToken:'Token', navMarket:'Market', navLimited:'Limited', navFaq:'FAQ', navX:'Official X',
     heroTagline:'Every legend begins as a seed — watch a tiny sakura sprout, grow, and bloom into the one-and-only Limited Edition.',
     heroSub:'すべての伝説は、一粒の種から始まる',
     chipSupply:'Total supply <b>6,666</b>', chipFree:'Mint #1 <b>FREE</b> · Agent ID', chipPaid:'Paid <b>0.001 BNB</b>', chipPack:'5-pack <b>0.004 BNB</b>',
@@ -506,7 +601,21 @@ var I18N = {
     mktP:'Once minting opens, holders can list and trade sakura on the collection marketplace — from Small Seedlings to the one-of-one Limited Edition.',
     mktLi1:'All 6 growth stages can be bought and sold', mktLi2:'The only place the Limited Edition can trade', mktLi3:'Opens after the mint launch',
     footLine:'6,666 trees — from Small Seedling to Sakura Limited Edition.',
-    footX:'Official X — @sakurashenft', footToken:'Token: SAKU', footNote:'Preview page — minting opens at launch.'
+    footX:'Official X — @sakurashenft', footToken:'Token: SAKU', footNote:'Preview page — minting opens at launch.',
+    faqTitle:'FAQ<span class="en-sub">よくある質問</span>',
+    faqDesc:'Answers to the questions we hear most — about minting, the SAKU bonus, and the marketplace.',
+    faqQ1:'Who can claim the free mint?',
+    faqA1:'Agent ID holders only, once per wallet. A free mint always becomes a <b>Small Seedling</b> (Common), and the free pool is capped at 6,000 of the 6,666 trees.',
+    faqQ2:'Can a paid mint draw a Small Seedling (Common)?',
+    faqA2:'Never. Paid mints skip the seedling stage completely — every draw is a <b>Young Sprout</b>, a <b>Sakura Bud</b>, or a <b>Full Bloom</b>.',
+    faqQ3:'How can I draw the Golden Sakura or the Limited Edition?',
+    faqA3:'Only the <b>5-pack mint</b> (0.004 BNB) can reach the Golden Sakura (Legendary) and the Sakura Limited Edition. It is a chance, not a guarantee.',
+    faqQ4:'How does the SAKU bonus work?',
+    faqA4:'Each paid mint earns <b>12,000 SAKU</b>, up to 60,000 SAKU per wallet. Free mints earn no bonus.',
+    faqQ5:'How many can one wallet mint?',
+    faqA5:'Up to <b>6 in total</b> — 1 free mint + 5 paid mints.',
+    faqQ6:'When does the marketplace open?',
+    faqA6:'After the mint launch. Holders will be able to list and trade all 6 growth stages.'
   }
 };
 var STAGES = [
@@ -621,6 +730,7 @@ function setLang(lang){
   }
   document.getElementById('langJa').setAttribute('aria-pressed', lang==='ja' ? 'true' : 'false');
   document.getElementById('langEn').setAttribute('aria-pressed', lang==='en' ? 'true' : 'false');
+  document.getElementById('hamburger').setAttribute('aria-label', lang==='ja' ? 'メニュー' : 'Menu');
   lb.setAttribute('aria-label', lang==='ja' ? 'アートワークビューア' : 'Artwork viewer');
   document.getElementById('lbClose').setAttribute('aria-label', lang==='ja' ? '閉じる' : 'Close');
   buildSteps(); buildGallery(); setStage(current, true);
@@ -628,6 +738,21 @@ function setLang(lang){
 }
 document.getElementById('langJa').addEventListener('click', function(){ setLang('ja'); });
 document.getElementById('langEn').addEventListener('click', function(){ setLang('en'); });
+var hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobileMenu');
+function closeMenu(){
+  mobileMenu.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+}
+hamburger.addEventListener('click', function(){
+  var open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+var mmLinks = mobileMenu.querySelectorAll('a');
+for (var m = 0; m < mmLinks.length; m++) mmLinks[m].addEventListener('click', closeMenu);
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+window.addEventListener('resize', function(){ if (window.innerWidth > 640) closeMenu(); });
 buildSteps(); buildGallery(); setStage(0, true);
 (function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
