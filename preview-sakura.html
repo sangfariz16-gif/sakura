@@ -175,6 +175,17 @@
 
   .v-count{margin-top:14px;font-weight:700;font-size:13.5px;color:var(--pink-deep)}
 
+  /* contract addresses */
+  .contract-box{margin-top:18px;background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:16px 18px;text-align:left}
+  .contract-box.center{max-width:760px;margin-left:auto;margin-right:auto;text-align:center}
+  .contract-label{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .contract-addr{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;word-break:break-all;color:var(--ink)}
+  .contract-meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:13px;font-weight:600;color:var(--muted)}
+  .contract-box.center .contract-meta{justify-content:center}
+  .contract-meta .minted-stat{color:var(--pink-deep);font-weight:700}
+  .bsc-link{color:var(--pink-deep);font-weight:700;text-decoration:none;white-space:nowrap}
+  .bsc-link:hover{text-decoration:underline}
+
   /* mint pricing */
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
   @media(max-width:900px){.price-grid{grid-template-columns:1fr}}
@@ -392,6 +403,14 @@
         <button class="mint-btn" type="button" disabled data-lkey="mintBtn">ミント — 近日公開</button>
         <div class="mint-note" data-lkey="mintNote">上記の仕様は確定済みです。ミントはローンチ時に開始します。</div>
       </div>
+      <div class="contract-box center">
+        <div class="contract-label" data-lkey="contractNftLabel">NFTコントラクト · BSC（BEP-721）</div>
+        <div class="contract-addr">0xF2705A84602369069782624279837A08bdbBf6D6</div>
+        <div class="contract-meta">
+          <span class="minted-stat" data-lkey="mintedStat">ミント済み 0 / 6,666</span>
+          <a class="bsc-link" href="https://bscscan.com/address/0xF2705A84602369069782624279837A08bdbBf6D6" target="_blank" rel="noopener" data-lkey="viewBscScan">BscScanで見る ↗</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -411,7 +430,14 @@
           <div><b>460,000,000</b><span data-lkey="tkS3">トレジャリー</span></div>
           <div><b>60,000</b><span data-lkey="tkS4">ウォレット上限</span></div>
         </div>
-        <p class="tk-note" data-lkey="tkNote">無料ミントにボーナスはありません。有料ミント1回ごとに 12,000 SAKU、5回フルで最大 60,000 SAKU が付与されます。SAKU のコントラクトアドレスはローンチ時に発表します。</p>
+        <p class="tk-note" data-lkey="tkNote">無料ミントにボーナスはありません。有料ミント1回ごとに 12,000 SAKU、5回フルで最大 60,000 SAKU が付与されます。</p>
+        <div class="contract-box">
+          <div class="contract-label" data-lkey="contractSakuLabel">SAKU トークンコントラクト · BSC</div>
+          <div class="contract-addr">0xeb45E44175D0Ed59F85cFB320A84EB5FB9Cfa831</div>
+          <div class="contract-meta">
+            <a class="bsc-link" href="https://bscscan.com/token/0xeb45E44175D0Ed59F85cFB320A84EB5FB9Cfa831" target="_blank" rel="noopener" data-lkey="viewBscScan">BscScanで見る ↗</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -434,6 +460,13 @@
             <li data-lkey="mktLi2">リミテッドエディションが取引できる唯一の場所</li>
             <li data-lkey="mktLi3">ミントローンチ後にオープン</li>
           </ul>
+          <div class="contract-box">
+            <div class="contract-label" data-lkey="contractMarketLabel">マーケットプレイスコントラクト · BSC</div>
+            <div class="contract-addr">0xc0677959f47d872eC1B5C3101f700D3c074746ef</div>
+            <div class="contract-meta">
+              <a class="bsc-link" href="https://bscscan.com/address/0xc0677959f47d872eC1B5C3101f700D3c074746ef" target="_blank" rel="noopener" data-lkey="viewBscScan">BscScanで見る ↗</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -537,7 +570,9 @@ var I18N = {
     tokDesc:'有料ミントにはトークンボーナスが付きます — あえて小さく抑え、666本の有料ツリーにだけ流れます。トークン名は <b>SAKU</b> です。',
     tkName:'トークン名 — SAKU', tkPer:'有料ミント1回ごとのボーナス',
     tkS1:'総供給量', tkS2:'ミントボーナスプール', tkS3:'トレジャリー', tkS4:'ウォレット上限',
-    tkNote:'無料ミントにボーナスはありません。有料ミント1回ごとに 12,000 SAKU、5回フルで最大 60,000 SAKU が付与されます。SAKU のコントラクトアドレスはローンチ時に発表します。',
+    tkNote:'無料ミントにボーナスはありません。有料ミント1回ごとに 12,000 SAKU、5回フルで最大 60,000 SAKU が付与されます。',
+    contractNftLabel:'NFTコントラクト · BSC（BEP-721）', contractSakuLabel:'SAKU トークンコントラクト · BSC', contractMarketLabel:'マーケットプレイスコントラクト · BSC',
+    mintedStat:'ミント済み 0 / 6,666', viewBscScan:'BscScanで見る ↗',
     mktTitle:'マーケットプレイス<span class="en-sub">Marketplace</span>',
     mktDesc:'育った木がここで取引されます — 新しい庭師には苗木を、コレクターには上位ステージを。',
     mktPill:'マーケットプレイス', mktH3:'育った木を取引しよう',
@@ -594,7 +629,9 @@ var I18N = {
     tokDesc:'Every paid mint comes with a token bonus — kept deliberately small, flowing only to the 666 paid trees. The token is named <b>SAKU</b>.',
     tkName:'Token name — SAKU', tkPer:'Bonus per paid mint',
     tkS1:'Total supply', tkS2:'Mint bonus pool', tkS3:'Treasury', tkS4:'Per-wallet cap',
-    tkNote:'Free mints earn no bonus. Each paid mint earns 12,000 SAKU, up to 60,000 SAKU for all 5. The SAKU contract address will be announced at launch.',
+    tkNote:'Free mints earn no bonus. Each paid mint earns 12,000 SAKU, up to 60,000 SAKU for all 5.',
+    contractNftLabel:'NFT Contract · BSC (BEP-721)', contractSakuLabel:'SAKU Token Contract · BSC', contractMarketLabel:'Marketplace Contract · BSC',
+    mintedStat:'Minted 0 / 6,666', viewBscScan:'View on BscScan ↗',
     mktTitle:'Marketplace<span class="en-sub">マーケットプレイス</span>',
     mktDesc:'Grown trees trade here — seedlings for new gardeners, top stages for collectors.',
     mktPill:'Marketplace', mktH3:'Trade your grown trees',
