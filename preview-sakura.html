@@ -269,6 +269,14 @@
   @media(max-width:700px){.live-row{justify-content:center}}
   .live-row b{color:var(--ink)}
   .live-stage{margin-top:14px;display:inline-block;font-size:13.5px;font-weight:700;color:var(--pink-deep);background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+  .live-top{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;display:grid;gap:8px;text-align:left}
+  .live-top-row{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
+  .live-top-row b{color:var(--ink);font-size:15px}
+  .live-top-ico{font-size:16px}
+  .live-top-state{margin-left:auto;font-size:12px;font-weight:700;color:var(--pink-deep);background:var(--blush);border:1px solid var(--line);border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .live-top-state.taken{color:var(--muted);background:var(--surface2)}
+  .live-top-note{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+  @media(max-width:700px){.live-top{justify-items:center;text-align:center}.live-top-note{text-align:center}}
   @media (prefers-reduced-motion: reduce){.crystal-ball,.crystal-dot,.live-pill.open .live-dot{animation:none}.crystal-tree img,.live-bar i{transition:none}}
 
   /* ── big direct mint buttons ── */
@@ -480,6 +488,19 @@
           <div class="live-row">
             <span><b id="livePct">–</b> <span data-lkey="liveSold">販売済み</span></span>
             <span><b id="liveRemaining">–</b> <span data-lkey="liveRemainingLabel">残り</span></span>
+          </div>
+          <div class="live-top" id="liveTop">
+            <div class="live-top-row">
+              <span class="live-top-ico" aria-hidden="true">💎</span>
+              <span><b id="liveLimited">–</b> <span data-lkey="liveLimitedLabel">Sakura リミテッドエディション</span></span>
+              <span class="live-top-state" id="liveLimitedState">…</span>
+            </div>
+            <div class="live-top-row">
+              <span class="live-top-ico" aria-hidden="true">✨</span>
+              <span><b id="liveLegendary">–</b> <span data-lkey="liveLegendaryLabel">金の桜（レジェンダリー）残り</span></span>
+              <span class="live-top-state" id="liveLegendaryState">…</span>
+            </div>
+            <p class="live-top-note" data-lkey="liveTopNote">金の桜とリミテッドエディションが当たるのは、5個パック (0.004 BNB) だけです。</p>
           </div>
           <div><span class="live-stage" id="liveStage">🌱</span></div>
         </div>
@@ -858,6 +879,9 @@ var I18N = {
     liveTitle:'ライブミント状況<span class="en-sub">Live Mint Status</span>',
     liveDesc:'クリスタルボールの中の桜は、ミントが進むほど大きく育ちます — 状況は15秒ごとにチェーンから自動更新されます。',
     liveChecking:'チェーン確認中…', liveMintedLabel:'ミント済みツリー', liveSold:'販売済み', liveRemainingLabel:'残り',
+    liveLimitedLabel:'Sakura リミテッドエディション', liveLimitedLeft:'まだ誰も当てていません', liveLimitedTaken:'ミント済み',
+    liveLegendaryLabel:'金の桜（レジェンダリー）残り', liveLegendaryLeft:'本残っています',
+    liveTopNote:'金の桜とリミテッドエディションが当たるのは、5個パック (0.004 BNB) だけです。',
     freeBigTag:'Agent ID 限定 · mint #1', freeBigTitle:'🌸 無料ミント',
     freeBigSub:'0 BNB — 1ウォレット1回 · 必ず小さな苗木（コモン）',
     paidBigTag:'パブリック · 誰でもOK', paidBigSub:'若芽 / 桜のつぼみ / 満開 のいずれか + 12,000 SAKU',
@@ -943,6 +967,9 @@ var I18N = {
     liveTitle:'Live Mint Status<span class="en-sub">ライブミント状況</span>',
     liveDesc:'The sakura inside the crystal ball grows bigger with every mint — status refreshes from the chain every 15 seconds.',
     liveChecking:'Checking chain…', liveMintedLabel:'trees minted', liveSold:'sold', liveRemainingLabel:'remaining',
+    liveLimitedLabel:'Sakura Limited Edition', liveLimitedLeft:'still unclaimed', liveLimitedTaken:'claimed',
+    liveLegendaryLabel:'Golden Sakura (Legendary) left', liveLegendaryLeft:'remaining',
+    liveTopNote:'Only the 5-pack (0.004 BNB) can draw Golden Sakura and the Limited Edition.',
     freeBigTag:'Agent ID only · mint #1', freeBigTitle:'🌸 FREE MINT',
     freeBigSub:'0 BNB — once per wallet · always a Small Seedling (Common)',
     paidBigTag:'Public · everyone welcome', paidBigSub:'Draws Young Sprout / Sakura Bud / Full Bloom + 12,000 SAKU',
@@ -1355,6 +1382,7 @@ buildSteps(); buildGallery(); setStage(0, true);
     var t = T();
     window.__sakuraLive = { minted: liveMinted, open: liveOpen, pillOpen: t.liveOpenTxt, pillClosed: t.liveClosedTxt, pillSoldOut: t.liveSoldOutTxt, stages: t.stages };
     if (typeof window.updateCrystalBall === 'function') window.updateCrystalBall();
+    if (typeof updateTopTiersUI === 'function' && typeof topTiers !== 'undefined' && topTiers) updateTopTiersUI();
     if (liveMinted !== null && mintedStat){
       mintedStat.textContent = ((typeof LANG !== 'undefined' && LANG === 'en') ? 'Minted ' : 'ミント済み ') + fmt(liveMinted) + ' / 6,666';
     }
@@ -1544,6 +1572,56 @@ buildSteps(); buildGallery(); setStage(0, true);
   bindProviderEvents();
   window.refreshMintUI();
   refreshChain();
+  /* ── Top-tier tracker: Limited (6666) + Legendary (6634–6665) ──
+     ownerOf() REVERTS for an unminted token — a revert means "not minted
+     yet", not an error. Only a non-revert RPC failure keeps the last
+     known state. 33 parallel eth_calls, once a minute (cheaper than the
+     15 s totalMinted poll). */
+  var SEL_OWNER_OF = '0x6352211e';
+  var topTiers = { limited: null, legendaryLeft: null };
+  function callOwnerOf(id){
+    return rpc('eth_call', [{ to: NFT, data: SEL_OWNER_OF + padUint(id) }, 'latest'])
+      .then(function(hex){ return hex; })
+      .catch(function(err){
+        var msg = (err && err.message) || '';
+        if (/revert/i.test(msg)) return '0x' + '0'.repeat(64); /* unminted */
+        return null; /* real RPC failure */
+      });
+  }
+  function updateTopTiersUI(){
+    var t = T();
+    var limState = document.getElementById('liveLimitedState');
+    var legState = document.getElementById('liveLegendaryState');
+    var limCount = document.getElementById('liveLimited');
+    var legCount = document.getElementById('liveLegendary');
+    if (topTiers.limited !== null && limState){
+      limState.textContent = topTiers.limited ? (t.liveLimitedLeft || 'still unclaimed') : (t.liveLimitedTaken || 'claimed');
+      limState.classList.toggle('taken', !topTiers.limited);
+      if (limCount) limCount.textContent = topTiers.limited ? '1 / 1' : '0 / 1';
+    }
+    if (topTiers.legendaryLeft !== null && legState){
+      if (legCount) legCount.textContent = topTiers.legendaryLeft + ' / 32';
+      legState.textContent = topTiers.legendaryLeft + ' ' + (t.liveLegendaryLeft || 'remaining');
+      legState.classList.toggle('taken', topTiers.legendaryLeft === 0);
+    }
+  }
+  function refreshTopTiers(){
+    var ids = [];
+    for (var id = 6634; id <= 6666; id++) ids.push(id);
+    Promise.all(ids.map(function(id){ return callOwnerOf(id); })).then(function(results){
+      var legendaryLeft = 0, limitedTaken = false;
+      for (var i = 0; i < results.length; i++){
+        if (results[i] === null) return; /* RPC failed — keep last known state */
+        var minted = (results[i] !== '0x' + '0'.repeat(64));
+        if (ids[i] === 6666) limitedTaken = minted;
+        else if (!minted) legendaryLeft++;
+      }
+      topTiers = { limited: !limitedTaken, legendaryLeft: legendaryLeft };
+      updateTopTiersUI();
+    }).catch(function(){});
+  }
+  refreshTopTiers();
+  setInterval(refreshTopTiers, 60000);
   setInterval(refreshChain, 15000);
 })();
 </script>
