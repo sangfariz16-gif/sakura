@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="data:," />
-<title>Sakura（さくら）— プレビュー</title>
+<title>Sakura（さくら）— ミント受付中</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -277,6 +277,51 @@
   .live-top-state.taken{color:var(--muted);background:var(--surface2)}
   .live-top-note{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
   @media(max-width:700px){.live-top{justify-items:center;text-align:center}.live-top-note{text-align:center}}
+
+  /* paid pool counter (inside live card) */
+  .live-paid{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;text-align:left}
+  .live-paid-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .live-paid-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .live-paid-count{margin-left:auto;font-family:"Marcellus",serif;font-size:24px;line-height:1.1;color:var(--ink);white-space:nowrap}
+  .live-paid-count b{color:var(--pink-deep)}
+  .live-paid .live-bar{margin:10px 0 6px}
+  .live-paid-left{font-size:13px;font-weight:700;color:var(--pink-deep)}
+  @media(max-width:700px){.live-paid{text-align:center}.live-paid-head{justify-content:center}.live-paid-count{margin-left:0}}
+
+  /* 5-pack spotlight */
+  .pack-spot{max-width:860px;margin:0 auto;background:#fff8e1;border:2px solid #b8860b;border-radius:28px;box-shadow:0 12px 32px rgba(184,134,11,.16);padding:34px 32px;text-align:center}
+  @media(prefers-color-scheme:dark){.pack-spot{background:#2e2612;border-color:#e8bc55}}
+  .pack-spot .ps-tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#b8860b;background:var(--surface);border:1px solid #b8860b;padding:5px 13px;border-radius:999px}
+  @media(prefers-color-scheme:dark){.pack-spot .ps-tag{color:#e8bc55;border-color:#e8bc55}}
+  .pack-spot h3{font-size:clamp(26px,5.4vw,38px);margin:16px 0 10px}
+  .pack-spot p{color:var(--muted);font-weight:500;max-width:620px;margin:0 auto}
+  .pack-spot p b{color:var(--ink)}
+  .ps-facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0 24px}
+  .ps-fact{font-size:14px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 15px;color:var(--ink)}
+  .ps-fact b{color:#b8860b}
+  @media(prefers-color-scheme:dark){.ps-fact b{color:#e8bc55}}
+  .ps-btn{appearance:none;border:none;background:#b8860b;color:#fff;font-family:inherit;font-weight:800;font-size:17px;padding:16px 36px;border-radius:999px;cursor:pointer;box-shadow:0 10px 24px rgba(184,134,11,.3)}
+  .ps-btn:hover{background:#9a7209}
+  .ps-btn:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
+  @media(prefers-color-scheme:dark){.ps-btn{background:#e8bc55;color:#1d1319}.ps-btn:hover{background:#d9a92f}}
+  @keyframes packFlash{0%,100%{box-shadow:0 8px 24px rgba(184,134,11,.14)}50%{box-shadow:0 0 0 6px rgba(184,134,11,.45),0 8px 24px rgba(184,134,11,.3)}}
+  .mint-group-pack.flash{animation:packFlash .8s ease-in-out 2}
+  @media (prefers-reduced-motion: reduce){.mint-group-pack.flash{animation:none;outline:3px solid #b8860b}}
+
+  /* recent mints feed */
+  .recent-card{max-width:860px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:10px 28px}
+  @media(max-width:700px){.recent-card{padding:6px 18px}}
+  .recent-status{font-size:13px;font-weight:600;color:var(--muted);padding:12px 0 4px;text-align:center}
+  .recent-status:empty{display:none}
+  .recent-list{list-style:none;margin:0;padding:0}
+  .recent-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .recent-item:last-child{border-bottom:none}
+  .recent-id{font-weight:800;font-size:16px;color:var(--ink);white-space:nowrap}
+  .recent-item .rarity-pill{margin:0;flex:none}
+  .recent-tier{font-weight:700;font-size:14.5px;color:var(--ink)}
+  .recent-meta{margin-left:auto;text-align:right;font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.45}
+  .recent-meta .recent-addr{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+  @media(max-width:560px){.recent-meta{margin-left:0;text-align:left;width:100%}}
   @media (prefers-reduced-motion: reduce){.crystal-ball,.crystal-dot,.live-pill.open .live-dot{animation:none}.crystal-tree img,.live-bar i{transition:none}}
 
   /* ── big direct mint buttons ── */
@@ -403,7 +448,7 @@
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top">SAKU<span>RA</span></a>
-    <span class="badge" data-lkey="badge">プレビュー</span>
+    <span class="badge" data-lkey="badge">ミント受付中</span>
     <div class="lang-toggle" role="group" aria-label="Language / 言語">
       <button type="button" id="langJa" aria-pressed="true">日本語</button>
       <button type="button" id="langEn" aria-pressed="false">EN</button>
@@ -502,8 +547,47 @@
             </div>
             <p class="live-top-note" data-lkey="liveTopNote">金の桜とリミテッドエディションが当たるのは、5個パック (0.004 BNB) だけです。</p>
           </div>
+          <div class="live-paid">
+            <div class="live-paid-head">
+              <span class="live-paid-label" data-lkey="livePaidLabel">有料ミント済み</span>
+              <span class="live-paid-count"><b id="livePaidCount">–</b> / 666</span>
+            </div>
+            <div class="live-bar" aria-hidden="true"><i id="livePaidBar"></i></div>
+            <div class="live-paid-left" id="livePaidLeft">…</div>
+          </div>
           <div><span class="live-stage" id="liveStage">🌱</span></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5-PACK SPOTLIGHT -->
+  <section id="packspot" style="padding-top:36px">
+    <div class="wrap">
+      <div class="pack-spot">
+        <span class="ps-tag" data-lkey="packSpotTag">5個パック · ベストチャンス</span>
+        <h3 data-lkey="packSpotTitle">金の桜とリミテッドエディションが当たるのは、5個パックだけ</h3>
+        <p data-lkey="packSpotBody">単品ミントでは絶対に当たらない <b>金の桜（レジェンダリー・全32本）</b> と <b>Sakura リミテッドエディション（世界に1点）</b> — 抽選できるのは5個パックだけです。しかも単品5回分よりお得です。</p>
+        <div class="ps-facts">
+          <span class="ps-fact" data-lkey="packSpotFact1">価格 <b>0.004 BNB</b></span>
+          <span class="ps-fact" data-lkey="packSpotFact2">単品5回より <b>0.001 BNB</b> お得</span>
+          <span class="ps-fact" data-lkey="packSpotFact3">ボーナス <b>+60,000 SAKU</b></span>
+        </div>
+        <button type="button" class="ps-btn" id="packSpotBtn" data-lkey="packSpotBtn">5個パックでミントする →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT MINTS -->
+  <section id="recent" style="padding-top:36px">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-lkey="recentTitle">最近のミント<span class="en-sub">Recent Mints</span></h2>
+        <p data-lkey="recentDesc">チェーン上で確認された最新のミント — 60秒ごとに自動更新されます。</p>
+      </div>
+      <div class="recent-card">
+        <div class="recent-status" id="recentStatus" role="status" aria-live="polite"></div>
+        <ul class="recent-list" id="recentList"></ul>
       </div>
     </div>
   </section>
@@ -711,7 +795,7 @@
 
           <div class="mint-status" id="mintStatus" role="status" aria-live="polite"></div>
         </div>
-        <div class="mint-note" data-lkey="mintNote">上記の仕様は確定済みです。ミントはローンチ時に開始します。</div>
+        <div class="mint-note" data-lkey="mintNote">ミントは現在ライブです — ウォレットを接続して今すぐミントできます。</div>
       </div>
       <div class="agent-lane" id="agentLane">
         <h3 data-lkey="laneTitle">プライオリティレーン — Agent ID保有者向け無料ミント</h3>
@@ -789,11 +873,11 @@
         <div class="info">
           <span class="rarity-pill r-legendary" style="align-self:flex-start" data-lkey="mktPill">マーケットプレイス</span>
           <h3 data-lkey="mktH3">育った木を取引しよう</h3>
-          <p data-lkey="mktP">ミント開始後、保有者はコレクション専用マーケットプレイスで桜を出品・取引できます — 小さな苗木から一点物のリミテッドエディションまで。</p>
+          <p data-lkey="mktP">マーケットプレイスはオープン中 — 保有者はコレクション専用マーケットプレイスで、今すぐ桜を出品・取引できます — 小さな苗木から一点物のリミテッドエディションまで。</p>
           <ul>
             <li data-lkey="mktLi1">6つの成長ステージすべてを売買可能</li>
             <li data-lkey="mktLi2">リミテッドエディションが取引できる唯一の場所</li>
-            <li data-lkey="mktLi3">ミントローンチ後にオープン</li>
+            <li data-lkey="mktLi3">オープン中 — 今すぐ取引できます</li>
           </ul>
           <a class="trade-element-btn" href="https://element.market/collections/sakura" target="_blank" rel="noopener">Trade on Element →</a>
           <div class="contract-box">
@@ -838,7 +922,7 @@
         </details>
         <details class="faq-item">
           <summary><span class="q-petal">✿</span><span data-lkey="faqQ6">マーケットプレイスはいつ開きますか？</span><span class="chev">▾</span></summary>
-          <div class="faq-a" data-lkey="faqA6">ミントのローンチ後にオープンします。保有者は6つの成長ステージすべてを出品・取引できます。</div>
+          <div class="faq-a" data-lkey="faqA6">すでにオープンしています。保有者は今すぐ、6つの成長ステージすべてを出品・取引できます。</div>
         </details>
       </div>
     </div>
@@ -850,7 +934,7 @@
       <div data-lkey="footLine">6,666本の木 — 小さな苗木から Sakura リミテッドエディションまで。</div>
       <div style="margin-top:10px"><a class="x-link" href="https://x.com/sakurashenft" target="_blank" rel="noopener" data-lkey="footX">公式X — @sakurashenft</a></div>
       <div style="margin-top:8px" data-lkey="footToken">トークン：SAKU</div>
-      <div style="margin-top:6px" data-lkey="footNote">プレビューページ — ミントはローンチ時に開始します。</div>
+      <div style="margin-top:6px" data-lkey="footNote">ミントは現在ライブです — 2026年11月9日に開始しました。</div>
     </div>
   </footer>
 </main>
@@ -875,13 +959,20 @@
 var LANG = 'ja';
 var I18N = {
   ja: {
-    badge:'プレビュー', navLive:'ライブ', navGrow:'成長', navCollection:'コレクション', navRarity:'レアリティ', navMint:'ミント', navToken:'トークン', navMarket:'マーケット', navLimited:'限定', navFaq:'FAQ', navX:'公式X',
+    badge:'ミント受付中', navLive:'ライブ', navGrow:'成長', navCollection:'コレクション', navRarity:'レアリティ', navMint:'ミント', navToken:'トークン', navMarket:'マーケット', navLimited:'限定', navFaq:'FAQ', navX:'公式X',
     liveTitle:'ライブミント状況<span class="en-sub">Live Mint Status</span>',
     liveDesc:'クリスタルボールの中の桜は、ミントが進むほど大きく育ちます — 状況は15秒ごとにチェーンから自動更新されます。',
     liveChecking:'チェーン確認中…', liveMintedLabel:'ミント済みツリー', liveSold:'販売済み', liveRemainingLabel:'残り',
     liveLimitedLabel:'Sakura リミテッドエディション', liveLimitedLeft:'まだ誰も当てていません', liveLimitedTaken:'ミント済み',
     liveLegendaryLabel:'金の桜（レジェンダリー）残り', liveLegendaryLeft:'本残っています',
     liveTopNote:'金の桜とリミテッドエディションが当たるのは、5個パック (0.004 BNB) だけです。',
+    livePaidLabel:'有料ミント済み',
+    packSpotTag:'5個パック · ベストチャンス', packSpotTitle:'金の桜とリミテッドエディションが当たるのは、5個パックだけ',
+    packSpotBody:'単品ミントでは絶対に当たらない <b>金の桜（レジェンダリー・全32本）</b> と <b>Sakura リミテッドエディション（世界に1点）</b> — 抽選できるのは5個パックだけです。しかも単品5回分よりお得です。',
+    packSpotFact1:'価格 <b>0.004 BNB</b>', packSpotFact2:'単品5回より <b>0.001 BNB</b> お得', packSpotFact3:'ボーナス <b>+60,000 SAKU</b>',
+    packSpotBtn:'5個パックでミントする →',
+    recentTitle:'最近のミント<span class="en-sub">Recent Mints</span>',
+    recentDesc:'チェーン上で確認された最新のミント — 60秒ごとに自動更新されます。',
     freeBigTag:'Agent ID 限定 · mint #1', freeBigTitle:'🌸 無料ミント',
     freeBigSub:'0 BNB — 1ウォレット1回 · 必ず小さな苗木（コモン）',
     paidBigTag:'パブリック · 誰でもOK', paidBigSub:'若芽 / 桜のつぼみ / 満開 のいずれか + 12,000 SAKU',
@@ -922,7 +1013,7 @@ var I18N = {
     rule2:'<b>ランダムミント</b> — 木のステージはミント時に抽選で決まり、順番には選べません。',
     rule3:'<b>有料プールはわずか666本</b> — 若芽 333 · 桜のつぼみ 200 · 満開 100 · 金の桜 32 · リミテッドエディション 1。',
     rule4:'<b>レジェンダリー＆リミテッドは5個パックのみ</b> — 単品の有料ミントは若芽から満開までの抽選です。',
-    mintBtn:'ミント — 近日公開', mintNote:'上記の仕様は確定済みです。ミントはローンチ時に開始します。',
+    mintBtn:'ミント — 近日公開', mintNote:'ミントは現在ライブです — ウォレットを接続して今すぐミントできます。',
     mpWallet:'ウォレット', mpQty:'数量', freeBtn:'無料ミント（Agent ID）',
     laneTitle:'プライオリティレーン — Agent ID保有者向け無料ミント',
     laneDesc:'あなたのエージェントがミントします。無料ミント用、または5個パック用のプロンプトをコピーして Binance Agentic Wallet に貼り付けてください。',
@@ -943,10 +1034,10 @@ var I18N = {
     mktTitle:'マーケットプレイス<span class="en-sub">Marketplace</span>',
     mktDesc:'育った木がここで取引されます — 新しい庭師には苗木を、コレクターには上位ステージを。',
     mktPill:'マーケットプレイス', mktH3:'育った木を取引しよう',
-    mktP:'ミント開始後、保有者はコレクション専用マーケットプレイスで桜を出品・取引できます — 小さな苗木から一点物のリミテッドエディションまで。',
-    mktLi1:'6つの成長ステージすべてを売買可能', mktLi2:'リミテッドエディションが取引できる唯一の場所', mktLi3:'ミントローンチ後にオープン',
+    mktP:'マーケットプレイスはオープン中 — 保有者はコレクション専用マーケットプレイスで、今すぐ桜を出品・取引できます — 小さな苗木から一点物のリミテッドエディションまで。',
+    mktLi1:'6つの成長ステージすべてを売買可能', mktLi2:'リミテッドエディションが取引できる唯一の場所', mktLi3:'オープン中 — 今すぐ取引できます',
     footLine:'6,666本の木 — 小さな苗木から Sakura リミテッドエディションまで。',
-    footX:'公式X — @sakurashenft', footToken:'トークン：SAKU', footNote:'プレビューページ — ミントはローンチ時に開始します。',
+    footX:'公式X — @sakurashenft', footToken:'トークン：SAKU', footNote:'ミントは現在ライブです — 2026年11月9日に開始しました。',
     faqTitle:'よくある質問<span class="en-sub">FAQ</span>',
     faqDesc:'ミントの仕組み、SAKUボーナス、マーケットプレイスについて、よく寄せられる質問をまとめました。',
     faqQ1:'無料ミントの条件を教えてください',
@@ -960,16 +1051,23 @@ var I18N = {
     faqQ5:'1つのウォレットで何個までミントできますか？',
     faqA5:'最大<b>6個</b>まで — 無料ミント1回 + 有料ミント5回です。',
     faqQ6:'マーケットプレイスはいつ開きますか？',
-    faqA6:'ミントのローンチ後にオープンします。保有者は6つの成長ステージすべてを出品・取引できます。'
+    faqA6:'すでにオープンしています。保有者は今すぐ、6つの成長ステージすべてを出品・取引できます。'
   },
   en: {
-    badge:'Preview', navLive:'Live', navGrow:'Grow', navCollection:'Collection', navRarity:'Rarity', navMint:'Mint', navToken:'Token', navMarket:'Market', navLimited:'Limited', navFaq:'FAQ', navX:'Official X',
+    badge:'Mint Live', navLive:'Live', navGrow:'Grow', navCollection:'Collection', navRarity:'Rarity', navMint:'Mint', navToken:'Token', navMarket:'Market', navLimited:'Limited', navFaq:'FAQ', navX:'Official X',
     liveTitle:'Live Mint Status<span class="en-sub">ライブミント状況</span>',
     liveDesc:'The sakura inside the crystal ball grows bigger with every mint — status refreshes from the chain every 15 seconds.',
     liveChecking:'Checking chain…', liveMintedLabel:'trees minted', liveSold:'sold', liveRemainingLabel:'remaining',
     liveLimitedLabel:'Sakura Limited Edition', liveLimitedLeft:'still unclaimed', liveLimitedTaken:'claimed',
     liveLegendaryLabel:'Golden Sakura (Legendary) left', liveLegendaryLeft:'remaining',
     liveTopNote:'Only the 5-pack (0.004 BNB) can draw Golden Sakura and the Limited Edition.',
+    livePaidLabel:'Paid claimed',
+    packSpotTag:'5-Pack · Best Chance', packSpotTitle:'Only the 5-pack can draw Golden Sakura & the Limited Edition',
+    packSpotBody:'Singles can never draw the <b>Golden Sakura (Legendary — only 32)</b> or the <b>Sakura Limited Edition (one of one)</b> — only 5-pack draws can. And it costs less than five singles.',
+    packSpotFact1:'Price <b>0.004 BNB</b>', packSpotFact2:'Save <b>0.001 BNB</b> vs 5 singles', packSpotFact3:'Bonus <b>+60,000 SAKU</b>',
+    packSpotBtn:'Mint the 5-Pack →',
+    recentTitle:'Recent Mints<span class="en-sub">最近のミント</span>',
+    recentDesc:'The latest mints confirmed on-chain — auto-refreshes every 60 seconds.',
     freeBigTag:'Agent ID only · mint #1', freeBigTitle:'🌸 FREE MINT',
     freeBigSub:'0 BNB — once per wallet · always a Small Seedling (Common)',
     paidBigTag:'Public · everyone welcome', paidBigSub:'Draws Young Sprout / Sakura Bud / Full Bloom + 12,000 SAKU',
@@ -1010,7 +1108,7 @@ var I18N = {
     rule2:'<b>Random mint</b> — your tree stage is drawn at mint time; you cannot pick in order.',
     rule3:'<b>Only 666 paid-pool trees</b> — Young Sprout 333 · Sakura Bud 200 · Full Bloom 100 · Golden Sakura 32 · Limited Edition 1.',
     rule4:'<b>Legendary &amp; Limited are 5-pack only</b> — single paid mints draw from Young Sprout to Full Bloom.',
-    mintBtn:'Mint — Coming Soon', mintNote:'The specs above are final. Minting opens at launch.',
+    mintBtn:'Mint — Coming Soon', mintNote:'Minting is live — connect your wallet and mint now.',
     mpWallet:'Wallet', mpQty:'Quantity', freeBtn:'Free Mint (Agent ID)',
     laneTitle:'Priority Lane — free mint for Agent ID holders',
     laneDesc:'Your agent mints for you. Copy the free-mint prompt — or the 5-pack prompt — and paste it to your Binance Agentic Wallet.',
@@ -1031,10 +1129,10 @@ var I18N = {
     mktTitle:'Marketplace<span class="en-sub">マーケットプレイス</span>',
     mktDesc:'Grown trees trade here — seedlings for new gardeners, top stages for collectors.',
     mktPill:'Marketplace', mktH3:'Trade your grown trees',
-    mktP:'Once minting opens, holders can list and trade sakura on the collection marketplace — from Small Seedlings to the one-of-one Limited Edition.',
-    mktLi1:'All 6 growth stages can be bought and sold', mktLi2:'The only place the Limited Edition can trade', mktLi3:'Opens after the mint launch',
+    mktP:'The marketplace is open now — holders can list and trade sakura on the collection marketplace today, from Small Seedlings to the one-of-one Limited Edition.',
+    mktLi1:'All 6 growth stages can be bought and sold', mktLi2:'The only place the Limited Edition can trade', mktLi3:'Open now — trade today',
     footLine:'6,666 trees — from Small Seedling to Sakura Limited Edition.',
-    footX:'Official X — @sakurashenft', footToken:'Token: SAKU', footNote:'Preview page — minting opens at launch.',
+    footX:'Official X — @sakurashenft', footToken:'Token: SAKU', footNote:'Minting is live — opened Nov 9, 2026.',
     faqTitle:'FAQ<span class="en-sub">よくある質問</span>',
     faqDesc:'Answers to the questions we hear most — about minting, the SAKU bonus, and the marketplace.',
     faqQ1:'Who can claim the free mint?',
@@ -1048,7 +1146,7 @@ var I18N = {
     faqQ5:'How many can one wallet mint?',
     faqA5:'Up to <b>6 in total</b> — 1 free mint + 5 paid mints.',
     faqQ6:'When does the marketplace open?',
-    faqA6:'After the mint launch. Holders will be able to list and trade all 6 growth stages.'
+    faqA6:'It is open now. Holders can list and trade all 6 growth stages today.'
   }
 };
 var STAGES = [
@@ -1154,7 +1252,7 @@ document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeL
 function setLang(lang){
   LANG = lang;
   document.documentElement.lang = lang;
-  document.title = lang==='ja' ? 'Sakura（さくら）— プレビュー' : 'Sakura — Preview';
+  document.title = lang==='ja' ? 'Sakura（さくら）— ミント受付中' : 'Sakura — Mint Live';
   var dict = I18N[lang];
   var els = document.querySelectorAll('[data-lkey]');
   for (var k = 0; k < els.length; k++){
@@ -1214,11 +1312,13 @@ buildSteps(); buildGallery(); setStage(0, true);
    mintPaid(uint256) — public, qty 1 = 0.001 BNB, qty 5 = 0.004 BNB. */
 (function(){
   var NFT = '0xF2705A84602369069782624279837A08bdbBf6D6';
+  var SAKU = '0xeb45E44175D0Ed59F85cFB320A84EB5FB9Cfa831';
   var RPC = 'https://bsc-dataseed1.defibit.io/';
   var SEL = {
     mintOpen: '0x24bbd049', totalMinted: '0xa2309ff8',
     mintFree: '0x8ab53447', mintPaid: '0x26c7f77c',
-    mintedOf: '0x617692dd', freeMintedOf: '0xf7b856b1', paidMintedOf: '0xb41e2f7b'
+    mintedOf: '0x617692dd', freeMintedOf: '0xf7b856b1', paidMintedOf: '0xb41e2f7b',
+    totalAccrued: '0x4ae8a5b7'
   };
   var ERRORS = {
     '0x0d9ab13f': 'notAgent', '0x589ed34b': 'mintClosed', '0x52df9fe5': 'soldOut',
@@ -1233,6 +1333,7 @@ buildSteps(); buildGallery(); setStage(0, true);
       connect: 'ウォレットを接続', notConnected: '未接続',
       floatClosed: 'ミント — 近日公開', floatOpen: '今すぐミント',
       noteOpen: 'ミント受付中です — ウォレットを接続してミントしてください。',
+      paidLeftPre: '残り ', paidLeftPost: ' 件',
       qty1: '0.001 BNB · 若芽 / 桜のつぼみ / 満開 の抽選', qty5: '0.004 BNB · 5個パック — 金の桜とリミテッドエディションのチャンス',
       paid1: 'MINT — 0.001 BNB', paid5: 'MINT 5個 — 0.004 BNB',
       paidSub1: '若芽 / 桜のつぼみ / 満開 のいずれか + 12,000 SAKU',
@@ -1269,6 +1370,7 @@ buildSteps(); buildGallery(); setStage(0, true);
       connect: 'Connect Wallet', notConnected: 'Not connected',
       floatClosed: 'Mint — Coming Soon', floatOpen: 'Mint Now',
       noteOpen: 'Minting is open — connect your wallet to mint.',
+      paidLeftPre: '', paidLeftPost: ' left',
       qty1: '0.001 BNB · draws Young Sprout / Sakura Bud / Full Bloom', qty5: '0.004 BNB · 5-pack — the only chance at Golden Sakura & the Limited Edition',
       paid1: 'MINT — 0.001 BNB', paid5: 'MINT 5 — 0.004 BNB',
       paidSub1: 'Draws Young Sprout / Sakura Bud / Full Bloom + 12,000 SAKU',
@@ -1360,7 +1462,44 @@ buildSteps(); buildGallery(); setStage(0, true);
     return rpc('eth_call', [{ to: NFT, data: addr ? sel + padAddr(addr) : sel }, 'latest'])
       .then(function(hex){ return parseInt(hex, 16); });
   }
+  /* ── Paid pool counter ───────────────────────────────────────────
+     paid = SAKU totalAccrued() / 12,000 (each paid mint accrues
+     12,000 SAKU). paidPool stays null until the first successful
+     read; a failed RPC keeps the last verified value — the UI shows
+     "–", never a fabricated 0, before any value is verified. */
+  var paidPool = null;
+  function callTokenBig(sel){
+    return rpc('eth_call', [{ to: SAKU, data: sel }, 'latest'])
+      .then(function(hex){ return BigInt(hex); });
+  }
+  function refreshPaidPool(){
+    callTokenBig(SEL.totalAccrued).then(function(accrued){
+      var paid = accrued / (12000n * (10n ** 18n));
+      if (paid > 666n) paid = 666n;
+      paidPool = Number(paid);
+      updatePaidUI();
+    }).catch(function(){ /* keep the last verified value */ });
+  }
+  function updatePaidUI(){
+    var countEl = document.getElementById('livePaidCount');
+    if (!countEl) return;
+    var barEl = document.getElementById('livePaidBar');
+    var leftEl = document.getElementById('livePaidLeft');
+    if (paidPool === null){
+      countEl.textContent = '–';
+      if (barEl) barEl.style.width = '0%';
+      if (leftEl) leftEl.textContent = '…';
+      return;
+    }
+    countEl.textContent = fmt(paidPool);
+    if (barEl) barEl.style.width = (paidPool / 666 * 100) + '%';
+    if (leftEl){
+      var t = T();
+      leftEl.textContent = (t.paidLeftPre || '') + fmt(666 - paidPool) + (t.paidLeftPost || '');
+    }
+  }
   function refreshChain(){
+    refreshPaidPool();
     return callUint(SEL.mintOpen).then(function(v){
       liveOpen = (v === 1);
       return callUint(SEL.totalMinted);
@@ -1386,6 +1525,7 @@ buildSteps(); buildGallery(); setStage(0, true);
     if (liveMinted !== null && mintedStat){
       mintedStat.textContent = ((typeof LANG !== 'undefined' && LANG === 'en') ? 'Minted ' : 'ミント済み ') + fmt(liveMinted) + ' / 6,666';
     }
+    updatePaidUI();
     /* Panel + both big mint buttons are ALWAYS visible — never hidden.
        Unusable buttons stay shown, disabled, with a short reason below. */
     panel.hidden = false;
@@ -1400,7 +1540,7 @@ buildSteps(); buildGallery(); setStage(0, true);
       mintBtn.classList.remove('live');
       mintBtn.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'Mint — Coming Soon' : 'ミント — 近日公開';
       if (floatBtn){ floatBtn.textContent = t.floatClosed; floatBtn.classList.remove('live'); }
-      if (mintNote) mintNote.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'The specs above are final. Minting opens at launch.' : '上記の仕様は確定済みです。ミントはローンチ時に開始します。';
+      if (mintNote && liveOpen === false) mintNote.textContent = (typeof LANG !== 'undefined' && LANG === 'en') ? 'Minting is currently paused.' : '現在ミントは停止中です。';
     }
     walletAddr.textContent = account ? account : t.notConnected;
     if (qty1Btn) qty1Btn.setAttribute('aria-pressed', qty === 1 ? 'true' : 'false');
@@ -1748,6 +1888,197 @@ buildSteps(); buildGallery(); setStage(0, true);
       out.textContent = t.fail;
     });
   });
+})();
+</script>
+<script>
+/* ── Live extras: 5-pack spotlight + Recent Mints feed ────────────
+   Recent Mints reads Transfer(from = 0x0) logs of the Sakura NFT
+   contract via eth_getLogs over public BSC RPCs, scanning backwards
+   in 50,000-block chunks until it has the 8 latest mints. The page's
+   primary RPC (bsc-dataseed) rejects eth_getLogs outright (-32005),
+   so the feed uses log-capable public endpoints, tried in order.
+   On any failure the last verified list stays on screen — entries
+   are never invented. Refreshes every 60 seconds. */
+(function(){
+  var NFT = '0xF2705A84602369069782624279837A08bdbBf6D6';
+  var TRANSFER = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+  var ZERO_TOPIC = '0x0000000000000000000000000000000000000000000000000000000000000000';
+  var LOG_RPCS = [
+    'https://bsc.mytokenpocket.vip',
+    'https://bsc.publicnode.com',
+    'https://bsc-mainnet.public.blastapi.io',
+    'https://bsc.drpc.org'
+  ];
+  var CHUNK = 50000, MAX_CHUNKS = 6, WANT = 8;
+  var RTXT = {
+    ja: { loading: 'チェーンから最新のミントを読み込み中…', failed: '更新できませんでした — 最後に確認したデータを表示しています。', failedFirst: 'チェーンを読み取れませんでした — 自動で再試行します。', empty: 'この期間にミントは見つかりませんでした。' },
+    en: { loading: 'Loading the latest mints from the chain…', failed: 'Refresh failed — showing the last verified data.', failedFirst: 'Could not read the chain — will retry automatically.', empty: 'No mints found in the scanned period.' }
+  };
+  function RT(){ return RTXT[(typeof LANG !== 'undefined' && LANG === 'en') ? 'en' : 'ja']; }
+  function $(id){ return document.getElementById(id); }
+  function shortAddr(a){ return a.slice(0, 6) + '…' + a.slice(-4); }
+  function tierIndex(id){
+    if (id <= 6000) return 0;
+    if (id <= 6333) return 1;
+    if (id <= 6533) return 2;
+    if (id <= 6633) return 3;
+    if (id <= 6665) return 4;
+    return 5;
+  }
+  function rpcOn(base, method, params){
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 20000) : null;
+    return fetch(base, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: method, params: params }),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if (timer) clearTimeout(timer);
+      if (!j || j.error || j.result === undefined) throw new Error('RPC error');
+      return j.result;
+    }).catch(function(e){ if (timer) clearTimeout(timer); throw e; });
+  }
+  function logRpc(method, params){
+    function attempt(i){
+      if (i >= LOG_RPCS.length) return Promise.reject(new Error('all log RPCs failed'));
+      return rpcOn(LOG_RPCS[i], method, params).catch(function(){ return attempt(i + 1); });
+    }
+    return attempt(0);
+  }
+
+  var entries = null; /* null = nothing verified yet */
+  var lastFailed = false, fetching = false;
+  var blockTimes = {};
+
+  function fmtTime(ts){
+    var d = new Date(ts * 1000);
+    var loc = (typeof LANG !== 'undefined' && LANG === 'en') ? 'en-US' : 'ja-JP';
+    return d.toLocaleDateString(loc, { month: 'short', day: 'numeric' }) + ' ' +
+           d.toLocaleTimeString(loc, { hour: '2-digit', minute: '2-digit' });
+  }
+  function renderRecent(){
+    var list = $('recentList'), status = $('recentStatus');
+    if (!list || !status) return;
+    var t = RT();
+    if (!entries){
+      list.innerHTML = '';
+      status.textContent = lastFailed ? t.failedFirst : t.loading;
+      return;
+    }
+    if (!entries.length){
+      list.innerHTML = '';
+      status.textContent = t.empty;
+      return;
+    }
+    status.textContent = lastFailed ? t.failed : '';
+    list.innerHTML = '';
+    entries.forEach(function(e){
+      var s = STAGES[tierIndex(e.id)], d = s[LANG];
+      var li = document.createElement('li');
+      li.className = 'recent-item';
+      li.innerHTML =
+        '<span class="recent-id">#' + e.id.toLocaleString('en-US') + '</span>' +
+        '<span class="rarity-pill ' + s.cls + '">' + d.rarity + '</span>' +
+        '<span class="recent-tier">' + d.name + '</span>' +
+        '<span class="recent-meta"><span class="recent-addr">' + shortAddr(e.to) + '</span>' +
+        (e.time ? '<br>' + fmtTime(e.time) : '') + '</span>';
+      list.appendChild(li);
+    });
+  }
+  function getBlockTime(blockNum){
+    if (blockTimes[blockNum]) return Promise.resolve(blockTimes[blockNum]);
+    return logRpc('eth_getBlockByNumber', ['0x' + blockNum.toString(16), false])
+      .then(function(b){
+        var ts = b && b.timestamp ? parseInt(b.timestamp, 16) : null;
+        if (ts) blockTimes[blockNum] = ts;
+        return ts;
+      }).catch(function(){ return null; });
+  }
+  function refreshRecent(){
+    if (fetching) return;
+    fetching = true;
+    if (!entries) renderRecent();
+    logRpc('eth_blockNumber', []).then(function(hex){
+      var latest = parseInt(hex, 16);
+      var found = [];
+      function step(chunk){
+        if (found.length >= WANT || chunk >= MAX_CHUNKS) return Promise.resolve(found);
+        var to = latest - chunk * CHUNK;
+        var from = Math.max(0, to - CHUNK + 1);
+        return logRpc('eth_getLogs', [{ address: NFT,
+          fromBlock: '0x' + from.toString(16), toBlock: '0x' + to.toString(16),
+          topics: [TRANSFER, ZERO_TOPIC] }]).then(function(logs){
+          for (var i = 0; i < logs.length; i++) found.push(logs[i]);
+          return step(chunk + 1);
+        }, function(err){
+          if (found.length) return found; /* keep what this scan verified */
+          throw err;
+        });
+      }
+      return step(0);
+    }).then(function(logs){
+      logs.sort(function(a, b){
+        var db = parseInt(b.blockNumber, 16) - parseInt(a.blockNumber, 16);
+        if (db !== 0) return db;
+        return parseInt(b.logIndex || '0x0', 16) - parseInt(a.logIndex || '0x0', 16);
+      });
+      var top = logs.slice(0, WANT);
+      var seen = {}, blocks = [];
+      top.forEach(function(l){
+        var bn = parseInt(l.blockNumber, 16);
+        if (!seen[bn]){ seen[bn] = true; blocks.push(bn); }
+      });
+      return Promise.all(blocks.map(getBlockTime)).then(function(){
+        entries = top.map(function(l){
+          var bn = parseInt(l.blockNumber, 16);
+          return {
+            id: parseInt(l.topics[3], 16),
+            to: '0x' + l.topics[2].slice(-40),
+            block: bn,
+            time: blockTimes[bn] || null
+          };
+        });
+        lastFailed = false;
+        fetching = false;
+        renderRecent();
+      });
+    }).catch(function(){
+      fetching = false;
+      lastFailed = true;
+      renderRecent(); /* last verified list stays untouched */
+    });
+  }
+
+  /* ── 5-pack spotlight: scroll to #mint and select the 5-pack ── */
+  var spotBtn = $('packSpotBtn');
+  if (spotBtn) spotBtn.addEventListener('click', function(){
+    var mintSec = $('mint');
+    if (mintSec) mintSec.scrollIntoView({ behavior: 'smooth' });
+    var group = document.querySelector('.mint-group-pack');
+    var packBtn = $('packBtn');
+    setTimeout(function(){
+      if (group){
+        group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        group.classList.remove('flash');
+        void group.offsetWidth;
+        group.classList.add('flash');
+        setTimeout(function(){ group.classList.remove('flash'); }, 1900);
+      }
+      if (packBtn) packBtn.focus({ preventScroll: true });
+    }, 500);
+  });
+
+  /* Re-render the feed when the language toggle fires refreshMintUI. */
+  if (typeof window.refreshMintUI === 'function'){
+    var origRefreshMintUI = window.refreshMintUI;
+    window.refreshMintUI = function(){
+      origRefreshMintUI();
+      renderRecent();
+    };
+  }
+
+  renderRecent();
+  refreshRecent();
+  setInterval(refreshRecent, 60000);
 })();
 </script>
 <script>
