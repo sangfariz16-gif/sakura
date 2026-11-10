@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>SAKURA Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<style>
+:root{
+  --bg:#fff6f8; --bg2:#ffeef3; --card:#ffffff; --card2:#fff0f4;
+  --ink:#2b1520; --muted:#7a5a68; --line:#f3cdd8;
+  --accent:#d6336c; --accent2:#e75480; --accent-ink:#fff;
+  --gold:#b8860b; --ok:#1a7f4b; --err:#c92a2a;
+  --shadow:0 10px 30px rgba(214,51,108,.12);
+  --radius:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#180d12; --bg2:#221118; --card:#24131b; --card2:#2c1822;
+    --ink:#fbeef3; --muted:#c9a3b2; --line:#4a2a38;
+    --accent:#ff6b9d; --accent2:#ff8fab; --accent-ink:#2b0f1a;
+    --gold:#e9c46a; --ok:#51cf8a; --err:#ff8787;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,var(--bg2),var(--bg) 340px);color:var(--ink);font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+a{color:var(--accent)}
+button,input,select{min-height:44px;font:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 56px}
+header.site{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.header-in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.brand{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:1.15rem;letter-spacing:.02em;margin-right:auto}
+.brand span{color:var(--accent)}
+.nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nav a{display:inline-flex;align-items:center;min-height:40px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--ink);background:var(--card);font-size:.9rem;font-weight:600}
+.btn{border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;background:var(--accent);color:var(--accent-ink);display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.danger{background:var(--card);color:var(--err);border:1px solid var(--err)}
+.btn.small{min-height:40px;padding:7px 14px;font-size:.9rem}
+.lang-toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.lang-toggle button{border:0;background:transparent;padding:8px 14px;cursor:pointer;font-weight:700;color:var(--muted);min-height:40px}
+.lang-toggle button.active{background:var(--accent);color:var(--accent-ink)}
+.hero{padding:34px 0 8px;text-align:left}
+.hero h1{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.25;margin:0 0 10px}
+.hero h1 .pink{color:var(--accent)}
+.hero p{color:var(--muted);max-width:640px;margin:0 0 18px;font-size:1rem}
+.petals{font-size:1.05rem;letter-spacing:.4em;color:var(--accent2)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.stat .num{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:1.5rem;line-height:1.2}
+.stat .lab{color:var(--muted);font-size:.85rem}
+.notice{background:var(--card2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:16px 0;font-size:.92rem}
+.notice strong{color:var(--accent)}
+section{margin-top:34px}
+section h2{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:1.35rem;margin:0 0 6px}
+section .sub{color:var(--muted);margin:0 0 16px;font-size:.94rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.toolbar .updated{color:var(--muted);font-size:.85rem;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card .imgbox{aspect-ratio:1/1;background:linear-gradient(135deg,var(--card2),var(--bg2));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card .imgbox img{width:100%;height:100%;object-fit:cover;display:block}
+.card .imgbox .noimg{color:var(--muted);text-align:center;padding:20px;font-size:.9rem}
+.card .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .tname{font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:1.1rem}
+.card .price{font-size:1.25rem;font-weight:800;color:var(--accent)}
+.card .price small{font-size:.85rem;color:var(--muted);font-weight:600}
+.card .seller{font-size:.85rem;color:var(--muted);word-break:break-all}
+.card .seller code{color:var(--ink)}
+.card .actions{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.card .upd{display:flex;gap:8px}
+.card .upd input{flex:1;min-width:0}
+input[type="number"],input[type="text"]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+.own-badge{align-self:flex-start;background:var(--gold);color:#231a00;font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:999px}
+.empty,.loading-box{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);padding:34px 18px;text-align:center;color:var(--muted)}
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:.92rem}
+label.f span.hint{font-weight:400;color:var(--muted);font-size:.82rem}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.status{margin-top:14px;border-radius:12px;padding:12px 14px;font-size:.92rem;display:none;white-space:pre-wrap;word-break:break-word}
+.status.show{display:block}
+.status.info{background:var(--card2);border:1px solid var(--line)}
+.status.ok{background:color-mix(in srgb,var(--ok) 14%,var(--card));border:1px solid var(--ok)}
+.status.err{background:color-mix(in srgb,var(--err) 12%,var(--card));border:1px solid var(--err)}
+.status a{font-weight:700}
+.contracts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contract-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.contract-box .clab{font-weight:800;margin-bottom:4px}
+.contract-box code{word-break:break-all;font-size:.85rem;color:var(--muted);display:block;margin-bottom:8px}
+.fee-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{border:1px solid var(--line);background:var(--card2);border-radius:999px;padding:8px 14px;font-weight:700;font-size:.9rem}
+.steps{margin:0;padding-left:1.3em;color:var(--muted);font-size:.94rem}
+.steps li{margin:4px 0}
+footer{margin-top:44px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.88rem;display:flex;flex-wrap:wrap;gap:10px 18px}
+.wallet-addr{font-size:.85rem;color:var(--muted);word-break:break-all}
+@media (max-width:640px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stats .stat:last-child{grid-column:1/-1}
+  .form-grid,.contracts{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr;gap:12px}
+  .card .body{padding:12px}
+  .card .price{font-size:1.05rem}
+}
+@media (max-width:400px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="header-in">
+    <div class="brand">🌸 SAKURA <span>Market</span></div>
+    <nav class="nav">
+      <a href="https://sakura-ash.vercel.app/" target="_blank" rel="noopener" data-i18n="nav_main">メインサイト</a>
+      <a href="https://element.market/collections/sakura" target="_blank" rel="noopener">Element Market</a>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" id="langJa" class="active">JA</button>
+        <button type="button" id="langEn">EN</button>
+      </div>
+      <button type="button" class="btn small" id="connectBtn" data-i18n="connect">ウォレット接続</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="petals" aria-hidden="true">✿ ✿ ✿</div>
+    <h1 data-i18n="hero_title">SAKURA公式マーケット</h1>
+    <p data-i18n="hero_sub">SAKURA NFT専用のエスクロー型マーケットプレイスです。出品されたNFTはマーケットコントラクトに預けられ、購入代金からロイヤリティ5%を差し引いた額が売り手へ届きます（プラットフォーム手数料0%）。</p>
+    <div class="wallet-addr" id="walletAddr"></div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="statCount">—</div><div class="lab" data-i18n="stat_listings">出品中</div></div>
+      <div class="stat"><div class="num" id="statFloor">—</div><div class="lab" data-i18n="stat_floor">最安値（BNB）</div></div>
+      <div class="stat"><div class="num">0%</div><div class="lab" data-i18n="stat_fee">プラットフォーム手数料</div></div>
+    </div>
+    <div class="fee-row">
+      <span class="chip" data-i18n="chip_fee">手数料 0%（永久）</span>
+      <span class="chip" data-i18n="chip_royalty">ロイヤリティ 5%（オーナーへ）</span>
+      <span class="chip">BNB Chain · Chain ID 56</span>
+    </div>
+  </div>
+
+  <div class="notice" id="noWalletNotice">
+    <strong data-i18n="notice_title">閲覧のみモード：</strong> <span data-i18n="notice_body">ウォレット未接続でも出品一覧は見られます。購入・出品にはウォレット接続が必要です。</span>
+  </div>
+
+  <section id="listings">
+    <h2 data-i18n="listings_title">出品一覧</h2>
+    <p class="sub" data-i18n="listings_sub">コントラクトから直接読み取っています（30秒ごとに自動更新）。</p>
+    <div class="toolbar">
+      <button type="button" class="btn secondary small" id="refreshBtn" data-i18n="refresh">更新する</button>
+      <span class="updated" id="lastUpdated"></span>
+    </div>
+    <div id="listingsArea"><div class="loading-box" data-i18n="loading">出品を読み込み中…</div></div>
+  </section>
+
+  <section id="sell">
+    <h2 data-i18n="sell_title">自分のNFTを出品する</h2>
+    <p class="sub" data-i18n="sell_sub">出品するとNFTはマーケットコントラクトに預けられます（エスクロー）。キャンセルするといつでも手元に戻ります。</p>
+    <div class="form-card">
+      <div class="form-grid">
+        <label class="f"><span data-i18n="f_token">トークン番号</span>
+          <input type="number" id="listTokenId" min="1" max="6666" step="1" placeholder="例：5630">
+          <span class="hint" data-i18n="f_token_hint">自分が所有しているSAKURAの番号（1〜6,666）</span>
+        </label>
+        <label class="f"><span data-i18n="f_price">価格（BNB）</span>
+          <input type="number" id="listPrice" min="0" step="0.0001" placeholder="例：0.001">
+          <span class="hint" data-i18n="f_price_hint">手数料は0%です。価格そのままが売り手の受取額の基準になります（ロイヤリティ5%を除く）。</span>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" id="approveBtn" data-i18n="approve_btn" disabled>① マーケットを承認する</button>
+        <button type="button" class="btn" id="listBtn" data-i18n="list_btn" disabled>② 出品する</button>
+      </div>
+      <ol class="steps" style="margin-top:14px">
+        <li data-i18n="step1">ウォレットを接続します。</li>
+        <li data-i18n="step2">初回のみ「承認」が必要です（setApprovalForAll）。</li>
+        <li data-i18n="step3">トークン番号と価格を入れて「出品する」を押します。</li>
+      </ol>
+      <div class="status" id="sellStatus" role="status"></div>
+    </div>
+    <div class="status" id="txStatus" role="status"></div>
+  </section>
+
+  <section id="contracts">
+    <h2 data-i18n="contracts_title">コントラクト</h2>
+    <p class="sub" data-i18n="contracts_sub">すべての取引は下記のオンチェーンコントラクトで処理されます。</p>
+    <div class="contracts">
+      <div class="contract-box">
+        <div class="clab" data-i18n="c_market">マーケット（エスクロー）</div>
+        <code>0xc0677959f47d872eC1B5C3101f700D3c074746ef</code>
+        <a href="https://bscscan.com/address/0xc0677959f47d872eC1B5C3101f700D3c074746ef" target="_blank" rel="noopener">BscScan ↗</a>
+      </div>
+      <div class="contract-box">
+        <div class="clab">SAKURA NFT (SAKURA · 6,666)</div>
+        <code>0xF2705A84602369069782624279837A08bdbBf6D6</code>
+        <a href="https://bscscan.com/address/0xF2705A84602369069782624279837A08bdbBf6D6" target="_blank" rel="noopener">BscScan ↗</a>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:14px">
+      <span data-i18n="royalty_note">ロイヤリティ5%はERC-2981でオーナーウォレット（0x36F3…3CbD2）へ支払われます。プラットフォーム手数料は0%で、追加の手数料はありません。</span>
+    </div>
+  </section>
+
+  <footer>
+    <a href="https://sakura-ash.vercel.app/" target="_blank" rel="noopener" data-i18n="nav_main">メインサイト</a>
+    <a href="https://element.market/collections/sakura" target="_blank" rel="noopener">Element Market</a>
+    <span data-i18n="footer_note">SAKURA Market — 公式エスクローマーケット（BNB Chain）</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var MARKET = "0xc0677959f47d872eC1B5C3101f700D3c074746ef";
+var NFT = "0xF2705A84602369069782624279837A08bdbBf6D6";
+var RPC = "https://bsc-dataseed1.defibit.io/";
+var CHAIN_ID = 56;
+
+var MARKET_ABI = [
+  "function getListedIds() view returns (uint256[])",
+  "function getListing(uint256 tokenId) view returns (address seller, uint256 price, bool active)",
+  "function list(uint256 tokenId, uint256 price)",
+  "function buy(uint256 tokenId) payable",
+  "function cancel(uint256 tokenId)",
+  "function updatePrice(uint256 tokenId, uint256 newPrice)"
+];
+var NFT_ABI = [
+  "function tokenURI(uint256 tokenId) view returns (string)",
+  "function ownerOf(uint256 tokenId) view returns (address)",
+  "function isApprovedForAll(address owner, address operator) view returns (bool)",
+  "function setApprovalForAll(address operator, bool approved)"
+];
+
+var I18N = {
+  ja: {
+    nav_main:"メインサイト", connect:"ウォレット接続", connected:"接続済み",
+    hero_title:"SAKURA公式マーケット",
+    hero_sub:"SAKURA NFT専用のエスクロー型マーケットプレイスです。出品されたNFTはマーケットコントラクトに預けられ、購入代金からロイヤリティ5%を差し引いた額が売り手へ届きます（プラットフォーム手数料0%）。",
+    stat_listings:"出品中", stat_floor:"最安値（BNB）", stat_fee:"プラットフォーム手数料",
+    chip_fee:"手数料 0%（永久）", chip_royalty:"ロイヤリティ 5%（オーナーへ）",
+    notice_title:"閲覧のみモード：", notice_body:"ウォレット未接続でも出品一覧は見られます。購入・出品にはウォレット接続が必要です。",
+    listings_title:"出品一覧", listings_sub:"コントラクトから直接読み取っています（30秒ごとに自動更新）。",
+    refresh:"更新する", loading:"出品を読み込み中…",
+    empty:"現在、アクティブな出品はありません。",
+    load_error:"出品の読み込みに失敗しました。しばらくしてから「更新する」を押してください。",
+    updated_at:"最終更新：",
+    seller:"売り手", buy:"購入する", cancel:"出品をキャンセル", update:"価格を変更",
+    price_ph:"新しい価格（BNB）", mine:"あなたの出品",
+    buy_need_wallet:"購入するにはウォレット接続が必要です。",
+    sell_title:"自分のNFTを出品する",
+    sell_sub:"出品するとNFTはマーケットコントラクトに預けられます（エスクロー）。キャンセルするといつでも手元に戻ります。",
+    f_token:"トークン番号", f_token_hint:"自分が所有しているSAKURAの番号（1〜6,666）",
+    f_price:"価格（BNB）", f_price_hint:"手数料は0%です。価格そのままが売り手の受取額の基準になります（ロイヤリティ5%を除く）。",
+    approve_btn:"① マーケットを承認する", list_btn:"② 出品する",
+    step1:"ウォレットを接続します。", step2:"初回のみ「承認」が必要です（setApprovalForAll）。", step3:"トークン番号と価格を入れて「出品する」を押します。",
+    contracts_title:"コントラクト", contracts_sub:"すべての取引は下記のオンチェーンコントラクトで処理されます。",
+    c_market:"マーケット（エスクロー）",
+    royalty_note:"ロイヤリティ5%はERC-2981でオーナーウォレット（0x36F3…3CbD2）へ支払われます。プラットフォーム手数料は0%で、追加の手数料はありません。",
+    footer_note:"SAKURA Market — 公式エスクローマーケット（BNB Chain）",
+    no_wallet:"ウォレットが見つかりません。MetaMaskまたはBinance Walletのブラウザで開いてください。",
+    wrong_chain:"BNB Chain（56）へ切り替えています…",
+    connect_first:"先にウォレットを接続してください。",
+    approving:"承認トランザクションを送信しました。確認を待っています…",
+    approved:"承認が完了しました。出品できます。",
+    already_approved:"すでに承認済みです。そのまま出品できます。",
+    listing_tx:"出品トランザクションを送信しました。確認を待っています…",
+    listed_ok:"出品が完了しました！一覧に反映されます。",
+    buying:"購入トランザクションを送信しました。確認を待っています…",
+    bought_ok:"購入が完了しました！NFTはあなたのウォレットへ送られました。",
+    cancelling:"キャンセルを送信しました。確認を待っています…",
+    cancelled_ok:"出品をキャンセルしました。NFTは手元に戻りました。",
+    updating:"価格変更を送信しました。確認を待っています…",
+    updated_ok:"価格を変更しました。",
+    err_invalid_input:"トークン番号（1〜6,666）と0より大きい価格を入力してください。",
+    err_generic:"エラーが発生しました：",
+    tx_link:"BscScanで確認",
+    wallet_label:"接続中："
+  },
+  en: {
+    nav_main:"Main site", connect:"Connect Wallet", connected:"Connected",
+    hero_title:"SAKURA Official Market",
+    hero_sub:"An escrow marketplace built for SAKURA NFTs. Listed NFTs are held by the market contract, and the seller receives the purchase price minus the 5% ERC-2981 royalty (platform fee 0%).",
+    stat_listings:"Active listings", stat_floor:"Floor price (BNB)", stat_fee:"Platform fee",
+    chip_fee:"Fee 0% — forever", chip_royalty:"Royalty 5% (to owner)",
+    notice_title:"View-only mode:", notice_body:"You can browse listings without a wallet. Connect a wallet to buy or list.",
+    listings_title:"Listings", listings_sub:"Read directly from the contract (auto-refreshes every 30 seconds).",
+    refresh:"Refresh", loading:"Loading listings…",
+    empty:"There are no active listings right now.",
+    load_error:"Failed to load listings. Please wait a moment and press Refresh.",
+    updated_at:"Last updated: ",
+    seller:"Seller", buy:"Buy", cancel:"Cancel listing", update:"Update price",
+    price_ph:"New price (BNB)", mine:"Your listing",
+    buy_need_wallet:"Connect your wallet to buy.",
+    sell_title:"List my NFT",
+    sell_sub:"When you list, your NFT is held by the market contract (escrow). Cancel anytime to get it back.",
+    f_token:"Token ID", f_token_hint:"A SAKURA token you own (1–6,666)",
+    f_price:"Price (BNB)", f_price_hint:"Platform fee is 0%. The listed price is the basis for what the seller receives (minus the 5% royalty).",
+    approve_btn:"1. Approve market", list_btn:"2. List NFT",
+    step1:"Connect your wallet.", step2:"First time only: approval is required (setApprovalForAll).", step3:"Enter the token ID and price, then press List.",
+    contracts_title:"Contracts", contracts_sub:"Every trade is handled by the on-chain contracts below.",
+    c_market:"Marketplace (escrow)",
+    royalty_note:"The 5% royalty is paid via ERC-2981 to the owner wallet (0x36F3…3CbD2). The platform fee is 0% — there are no additional fees.",
+    footer_note:"SAKURA Market — official escrow market (BNB Chain)",
+    no_wallet:"No wallet found. Please open this page in MetaMask or the Binance Wallet browser.",
+    wrong_chain:"Switching to BNB Chain (56)…",
+    connect_first:"Please connect your wallet first.",
+    approving:"Approval transaction sent. Waiting for confirmation…",
+    approved:"Approval complete. You can list now.",
+    already_approved:"Already approved. You can list right away.",
+    listing_tx:"Listing transaction sent. Waiting for confirmation…",
+    listed_ok:"Listing complete! It will appear in the list shortly.",
+    buying:"Purchase transaction sent. Waiting for confirmation…",
+    bought_ok:"Purchase complete! The NFT was sent to your wallet.",
+    cancelling:"Cancellation sent. Waiting for confirmation…",
+    cancelled_ok:"Listing cancelled. The NFT is back in your wallet.",
+    updating:"Price update sent. Waiting for confirmation…",
+    updated_ok:"Price updated.",
+    err_invalid_input:"Enter a token ID (1–6,666) and a price greater than 0.",
+    err_generic:"Something went wrong: ",
+    tx_link:"View on BscScan",
+    wallet_label:"Connected: "
+  }
+};
+var lang = "ja";
+function t(k){ return (I18N[lang] && I18N[lang][k]) || I18N.ja[k] || k; }
+function applyLang(){
+  document.documentElement.lang = lang;
+  var els = document.querySelectorAll("[data-i18n]");
+  for (var i=0;i<els.length;i++){ var key = els[i].getAttribute("data-i18n"); if (I18N[lang][key]) els[i].textContent = I18N[lang][key]; }
+  document.getElementById("langJa").classList.toggle("active", lang==="ja");
+  document.getElementById("langEn").classList.toggle("active", lang==="en");
+  document.getElementById("listTokenId").placeholder = lang==="ja" ? "例：5630" : "e.g. 5630";
+  document.getElementById("listPrice").placeholder = lang==="ja" ? "例：0.001" : "e.g. 0.001";
+  updateConnectBtn();
+  renderListings(lastListings, lastError);
+}
+document.getElementById("langJa").addEventListener("click", function(){ lang="ja"; applyLang(); });
+document.getElementById("langEn").addEventListener("click", function(){ lang="en"; applyLang(); });
+
+function shortAddr(a){ return a ? a.slice(0,6)+"…"+a.slice(-4) : ""; }
+function fmtBNB(wei){
+  try { var s = ethers.utils.formatEther(wei); if (s.indexOf(".")>-1){ s = s.replace(/0+$/,"").replace(/\.$/,""); } return s; } catch(e){ return "—"; }
+}
+function ipfsFix(u){
+  if (!u) return "";
+  if (u.indexOf("ipfs://")===0) return "https://ipfs.io/ipfs/"+u.slice(7);
+  return u;
+}
+
+/* ---------- read side (public RPC, no wallet needed) ---------- */
+var readProvider = null, readMarket = null, readNFT = null;
+try {
+  readProvider = new ethers.providers.JsonRpcProvider(RPC);
+  readMarket = new ethers.Contract(MARKET, MARKET_ABI, readProvider);
+  readNFT = new ethers.Contract(NFT, NFT_ABI, readProvider);
+} catch(e) { readMarket = null; readNFT = null; }
+var lastListings = null, lastError = false;
+var imgCache = {};
+
+function fetchImage(tokenId){
+  if (imgCache[tokenId] !== undefined) return Promise.resolve(imgCache[tokenId]);
+  return readNFT.tokenURI(tokenId).then(function(uri){
+    uri = ipfsFix(uri);
+    return fetch(uri).then(function(r){ return r.json(); }).then(function(meta){
+      var img = ipfsFix(meta && meta.image ? meta.image : "");
+      imgCache[tokenId] = img; return img;
+    }).catch(function(){ imgCache[tokenId]=""; return ""; });
+  }).catch(function(){ imgCache[tokenId]=""; return ""; });
+}
+
+function loadListings(){
+  if (!readMarket || typeof ethers === "undefined"){ lastError = true; renderListings(null, true); return Promise.resolve(); }
+  return readMarket.getListedIds().then(function(ids){
+    var jobs = ids.map(function(id){
+      return readMarket.getListing(id).then(function(l){
+        return { id: id.toString(), seller: l.seller || l[0], price: l.price || l[1], active: (l.active !== undefined ? l.active : l[2]) };
+      }).catch(function(){ return null; });
+    });
+    return Promise.all(jobs);
+  }).then(function(rows){
+    var active = rows.filter(function(r){ return r && r.active; });
+    var imgJobs = active.map(function(r){ return fetchImage(r.id); });
+    return Promise.all(imgJobs).then(function(imgs){
+      active.forEach(function(r,i){ r.image = imgs[i]; });
+      active.sort(function(a,b){ return parseInt(a.id,10)-parseInt(b.id,10); });
+      lastListings = active; lastError = false;
+      renderListings(active, false);
+      updateStats(active);
+      document.getElementById("lastUpdated").textContent = t("updated_at") + new Date().toLocaleTimeString();
+    });
+  }).catch(function(e){
+    lastError = true;
+    if (!lastListings) renderListings(null, true);
+  });
+}
+function updateStats(list){
+  document.getElementById("statCount").textContent = list ? list.length : "—";
+  if (list && list.length){
+    var min = list[0].price;
+    list.forEach(function(r){ if (r.price.lt(min)) min = r.price; });
+    document.getElementById("statFloor").textContent = fmtBNB(min);
+  } else { document.getElementById("statFloor").textContent = "—"; }
+}
+
+function renderListings(list, isError){
+  var area = document.getElementById("listingsArea");
+  if (isError){ area.innerHTML = '<div class="empty">'+escapeHtml(t("load_error"))+'</div>'; return; }
+  if (!list){ area.innerHTML = '<div class="loading-box">'+escapeHtml(t("loading"))+'</div>'; return; }
+  if (!list.length){ area.innerHTML = '<div class="empty">'+escapeHtml(t("empty"))+'</div>'; return; }
+  area.innerHTML = "";
+  var grid = document.createElement("div"); grid.className = "grid";
+  list.forEach(function(r){ grid.appendChild(cardFor(r)); });
+  area.appendChild(grid);
+}
+function escapeHtml(s){ var d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+function cardFor(r){
+  var card = document.createElement("div"); card.className = "card";
+  var isMine = account && r.seller && account.toLowerCase() === r.seller.toLowerCase();
+  var imgHtml = r.image ? '<img src="'+escapeHtml(r.image)+'" alt="SAKURA #'+r.id+'" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=&quot;noimg&quot;>🌸 SAKURA #'+r.id+'</div>\'">' : '<div class="noimg">🌸<br>SAKURA #'+r.id+'</div>';
+  var html = '<div class="imgbox">'+imgHtml+'</div><div class="body">'
+    + (isMine ? '<span class="own-badge">'+escapeHtml(t("mine"))+'</span>' : '')
+    + '<div class="tname">SAKURA #'+r.id+'</div>'
+    + '<div class="price">'+fmtBNB(r.price)+' <small>BNB</small></div>'
+    + '<div class="seller">'+escapeHtml(t("seller"))+': <code title="'+escapeHtml(r.seller)+'">'+shortAddr(r.seller)+'</code></div>'
+    + '<div class="actions">';
+  if (isMine){
+    html += '<div class="upd"><input type="number" step="0.0001" min="0" placeholder="'+escapeHtml(t("price_ph"))+'" id="upd-'+r.id+'"><button type="button" class="btn secondary small" data-act="update" data-id="'+r.id+'">'+escapeHtml(t("update"))+'</button></div>'
+      + '<button type="button" class="btn danger small" data-act="cancel" data-id="'+r.id+'">'+escapeHtml(t("cancel"))+'</button>';
+  } else {
+    html += '<button type="button" class="btn small" data-act="buy" data-id="'+r.id+'" data-price="'+r.price.toString()+'" '+(account?"":"disabled")+'>'+escapeHtml(t("buy"))+'</button>'
+      + (account ? "" : '<div class="seller">'+escapeHtml(t("buy_need_wallet"))+'</div>');
+  }
+  html += '</div></div>';
+  card.innerHTML = html;
+  var btns = card.querySelectorAll("button[data-act]");
+  for (var i=0;i<btns.length;i++){ btns[i].addEventListener("click", onCardAction); }
+  return card;
+}
+
+/* ---------- wallet side ---------- */
+var account = null, signer = null, writeMarket = null, writeNFT = null;
+
+function updateConnectBtn(){
+  var b = document.getElementById("connectBtn");
+  b.textContent = account ? t("connected")+" ✓" : t("connect");
+  document.getElementById("walletAddr").textContent = account ? t("wallet_label")+account : "";
+  document.getElementById("noWalletNotice").style.display = account ? "none" : "block";
+  var dis = !account;
+  document.getElementById("approveBtn").disabled = dis;
+  document.getElementById("listBtn").disabled = dis;
+}
+function setStatus(el, msg, kind, txHash){
+  el.className = "status show "+(kind||"info");
+  el.innerHTML = escapeHtml(msg) + (txHash ? ' <a href="https://bscscan.com/tx/'+txHash+'" target="_blank" rel="noopener">'+escapeHtml(t("tx_link"))+' ↗</a>' : "");
+}
+function errMsg(e){
+  if (!e) return "unknown";
+  var m = e.message || String(e);
+  if (e.data && e.data.message) m = e.data.message;
+  if (m.length > 220) m = m.slice(0,220)+"…";
+  return m;
+}
+function ensureChain(){
+  return window.ethereum.request({ method:"eth_chainId" }).then(function(cid){
+    if (parseInt(cid,16) === CHAIN_ID) return;
+    setStatus(document.getElementById("txStatus"), t("wrong_chain"), "info");
+    return window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:"0x38"}] }).catch(function(swErr){
+      if (swErr && swErr.code === 4902){
+        return window.ethereum.request({ method:"wallet_addEthereumChain", params:[{ chainId:"0x38", chainName:"BNB Smart Chain", nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18}, rpcUrls:[RPC], blockExplorerUrls:["https://bscscan.com"] }] });
+      }
+      throw swErr;
+    });
+  });
+}
+function connect(){
+  var st = document.getElementById("txStatus");
+  if (!window.ethereum){ setStatus(st, t("no_wallet"), "err"); return Promise.resolve(); }
+  return window.ethereum.request({ method:"eth_requestAccounts" }).then(function(accs){
+    account = accs && accs[0] ? accs[0] : null;
+    return ensureChain();
+  }).then(function(){
+    var wp = new ethers.providers.Web3Provider(window.ethereum);
+    return wp.getNetwork().then(function(){ signer = wp.getSigner(); return signer.getAddress(); }).then(function(addr){
+      account = addr;
+      writeMarket = new ethers.Contract(MARKET, MARKET_ABI, signer);
+      writeNFT = new ethers.Contract(NFT, NFT_ABI, signer);
+      updateConnectBtn();
+      if (lastListings) renderListings(lastListings, false);
+    });
+  }).catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); });
+}
+document.getElementById("connectBtn").addEventListener("click", connect);
+if (window.ethereum && window.ethereum.on){
+  window.ethereum.on("accountsChanged", function(accs){
+    account = accs && accs[0] ? accs[0] : null;
+    signer = null; writeMarket = null; writeNFT = null;
+    updateConnectBtn();
+    if (lastListings) renderListings(lastListings, false);
+    if (account) connect();
+  });
+  window.ethereum.on("chainChanged", function(){ /* keep public reads as-is */ });
+}
+
+/* ---------- actions ---------- */
+function needWallet(st){ if (!account || !writeMarket){ setStatus(st, t("connect_first"), "err"); return true; } return false; }
+
+function onCardAction(ev){
+  var btn = ev.currentTarget;
+  var act = btn.getAttribute("data-act"), id = btn.getAttribute("data-id");
+  var st = document.getElementById("txStatus");
+  if (needWallet(st)) return;
+  btn.disabled = true;
+  if (act === "buy"){
+    var price = btn.getAttribute("data-price");
+    setStatus(st, t("buying"), "info");
+    writeMarket.buy(id, { value: price }).then(function(tx){
+      setStatus(st, t("buying"), "info", tx.hash);
+      return tx.wait();
+    }).then(function(){ setStatus(st, t("bought_ok"), "ok"); loadListings(); })
+    .catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); })
+    .finally(function(){ btn.disabled = false; });
+  } else if (act === "cancel"){
+    setStatus(st, t("cancelling"), "info");
+    writeMarket.cancel(id).then(function(tx){
+      setStatus(st, t("cancelling"), "info", tx.hash);
+      return tx.wait();
+    }).then(function(){ setStatus(st, t("cancelled_ok"), "ok"); loadListings(); })
+    .catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); })
+    .finally(function(){ btn.disabled = false; });
+  } else if (act === "update"){
+    var inp = document.getElementById("upd-"+id);
+    var v = inp ? inp.value : "";
+    var parsed;
+    try { parsed = ethers.utils.parseEther(String(v||"")); } catch(e){ parsed = null; }
+    if (!parsed || parsed.lte(0)){ setStatus(st, t("err_invalid_input"), "err"); btn.disabled = false; return; }
+    setStatus(st, t("updating"), "info");
+    writeMarket.updatePrice(id, parsed).then(function(tx){
+      setStatus(st, t("updating"), "info", tx.hash);
+      return tx.wait();
+    }).then(function(){ setStatus(st, t("updated_ok"), "ok"); loadListings(); })
+    .catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); })
+    .finally(function(){ btn.disabled = false; });
+  }
+}
+
+document.getElementById("approveBtn").addEventListener("click", function(){
+  var st = document.getElementById("sellStatus");
+  if (needWallet(st)) return;
+  var btn = this; btn.disabled = true;
+  writeNFT.isApprovedForAll(account, MARKET).then(function(ok){
+    if (ok){ setStatus(st, t("already_approved"), "ok"); btn.disabled = false; return null; }
+    setStatus(st, t("approving"), "info");
+    return writeNFT.setApprovalForAll(MARKET, true).then(function(tx){
+      setStatus(st, t("approving"), "info", tx.hash);
+      return tx.wait();
+    }).then(function(){ setStatus(st, t("approved"), "ok"); });
+  }).catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); })
+  .finally(function(){ btn.disabled = false; });
+});
+
+document.getElementById("listBtn").addEventListener("click", function(){
+  var st = document.getElementById("sellStatus");
+  if (needWallet(st)) return;
+  var idVal = document.getElementById("listTokenId").value;
+  var priceVal = document.getElementById("listPrice").value;
+  var id = parseInt(idVal, 10);
+  var parsed;
+  try { parsed = ethers.utils.parseEther(String(priceVal||"")); } catch(e){ parsed = null; }
+  if (!id || id < 1 || id > 6666 || !parsed || parsed.lte(0)){ setStatus(st, t("err_invalid_input"), "err"); return; }
+  var btn = this; btn.disabled = true;
+  setStatus(st, t("listing_tx"), "info");
+  writeMarket.list(id, parsed).then(function(tx){
+    setStatus(st, t("listing_tx"), "info", tx.hash);
+    return tx.wait();
+  }).then(function(){
+    setStatus(st, t("listed_ok"), "ok");
+    document.getElementById("listTokenId").value = "";
+    document.getElementById("listPrice").value = "";
+    loadListings();
+  }).catch(function(e){ setStatus(st, t("err_generic")+errMsg(e), "err"); })
+  .finally(function(){ btn.disabled = false; });
+});
+
+document.getElementById("refreshBtn").addEventListener("click", loadListings);
+
+/* ---------- init ---------- */
+updateConnectBtn();
+applyLang();
+loadListings();
+setInterval(loadListings, 30000);
+})();
+</script>
+</body>
+</html>
